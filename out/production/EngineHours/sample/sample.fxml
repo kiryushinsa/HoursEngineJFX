@@ -10,14 +10,14 @@
             <TextField fx:id="FieldPeriodMilage" layoutX="14.0" layoutY="116.0" prefHeight="25.0" prefWidth="316.0" promptText="Период обслуживания" style="-fx-background-color: #ffffff;" />
             <TextField fx:id="FieldNameTechnic" layoutX="14.0" layoutY="30.0" promptText="Название техники" style="-fx-background-color: #ffffff;" />
             <TextField fx:id="FieldFirstMilage" layoutX="14.0" layoutY="71.0" prefHeight="25.0" prefWidth="316.0" promptText="Начальный пробег " style="-fx-background-color: #ffffff;" />
-            <TextField fx:id="FieldIndexMilage" layoutX="14.0" layoutY="158.0" prefHeight="25.0" prefWidth="316.0" promptText="Индех моточасов" style="-fx-background-color: #ffffff;" />
             <TextField fx:id="FieldFullMilage" layoutX="14.0" layoutY="201.0" prefHeight="25.0" prefWidth="316.0" promptText="Полные моточасы" style="-fx-background-color: #ffffff;" />
             <Button fx:id="ButtonSend" layoutX="500.0" layoutY="12.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="143.0" text="Отправить данные" />
-            <Spinner fx:id="spiner1" editable="true" layoutX="426.0" layoutY="201.0" >
+            <Spinner fx:id="SpinnerIndexMilage" editable="true" layoutX="138.0" layoutY="158.0" prefHeight="25.0" prefWidth="190.0">
             <valueFactory>
-               <SpinnerValueFactory.IntegerSpinnerValueFactory min="10" max="50"/>
+               <SpinnerValueFactory.IntegerSpinnerValueFactory max="50" min="10" />
             </valueFactory>
             </Spinner>
+            <Label layoutX="14.0" layoutY="160.0" text="Индекс моточасов" />
          </children>
       </AnchorPane>
       <Label layoutX="26.0" layoutY="25.0" text="Техника " textFill="WHITE">

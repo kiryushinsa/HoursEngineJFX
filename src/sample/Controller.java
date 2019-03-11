@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -11,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 
 public class Controller {
 
@@ -39,7 +42,7 @@ public class Controller {
     private Button ButtonSend;
 
     @FXML
-    Spinner <Integer> spiner1= new Spinner(2,4,1) ;
+    Spinner <?> SpinnerIndexMilage;
 
 
     @FXML
@@ -59,16 +62,25 @@ public class Controller {
 
               }  );
 
-      FieldFullMilage.textProperty().addListener(new ChangeListener<String>()
-      {
+      FieldFullMilage.textProperty().addListener(new ChangeListener<String>() {
           @Override
-          public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
-          {
-              if (!newValue.matches("\\d")) { newValue.replaceAll("[^\\d]",""); }
+          public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+              if (!newValue.matches(" \\d*")) {
+                  FieldFullMilage.setText(newValue.replaceAll("[^\\d]", ""));
+
+                  //        /^(?!\.$)([0-9]{3}\.[0-9]{2})$/    \d*  [^\d]
+              }
           }
-
-
       });
+
+
+
+
+        Pattern pattern= Pattern.compile("\\d{0,3}|\\d{0,3}+\\.(\\d{0,2})");
+        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+            return pattern.matcher(change.getControlNewText()).matches() ? change : null;
+        });
+        FieldPeriodMilage.setTextFormatter(formatter);
 
     }
 }
