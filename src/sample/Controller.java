@@ -7,15 +7,18 @@ import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
+import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
-public class Controller {
+public class Controller  {
+
 
     @FXML
     private ResourceBundle resources;
@@ -24,7 +27,7 @@ public class Controller {
     private URL location;
 
     @FXML
-    private TextField FieldPeriodMilage;
+    private TextField FieldPeriodOfService;
 
     @FXML
     private TextField FieldNameTechnic;
@@ -33,54 +36,77 @@ public class Controller {
     private TextField FieldFirstMilage;
 
     @FXML
-    private TextField FieldIndexMilage;
-
-    @FXML
-    private TextField FieldFullMilage;
-
-    @FXML
     private Button ButtonSend;
 
     @FXML
-    Spinner <?> SpinnerIndexMilage;
+    private TextField FieldIndexEngineHours;
 
+    @FXML
+    private TableView <?> TableTechnic;
 
     @FXML
     void initialize() {
       ButtonSend.setOnAction(event -> {
                   DataBaseHandler Handler = new DataBaseHandler();
-                  double  indexEngine=3.5;
+
 
                   try {
-                      Handler.addTech(FieldNameTechnic.getText(), Integer.parseInt(FieldFirstMilage.getText()) ,Integer.parseInt(FieldPeriodMilage.getText()),Double.parseDouble(FieldIndexMilage.getText()),Integer.parseInt(FieldFullMilage.getText()));
+
+                      Handler.addTech(FieldNameTechnic.getText(), Integer.parseInt(FieldFirstMilage.getText()) ,Integer.parseInt(FieldPeriodOfService.getText()),Double.parseDouble(FieldIndexEngineHours.getText()));
+
                   } catch (SQLException e) {
                       e.printStackTrace();
                   } catch (ClassNotFoundException e) {
                       e.printStackTrace();
                   }
+                  catch (NumberFormatException e)
+                  {
+                      System.out.println("Заполните все поля ");
+                      Alert alert = new Alert(Alert.AlertType.WARNING);
+                      alert.setTitle("Error");
+                      alert.setHeaderText("Ошибка при добавлении записи в базу данных");
+                      alert.setContentText("Заполните все поля");
+                      alert.showAndWait();
+                  }
+
+
 
 
               }  );
 
-      FieldFullMilage.textProperty().addListener(new ChangeListener<String>() {
-          @Override
-          public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-              if (!newValue.matches(" \\d*")) {
-                  FieldFullMilage.setText(newValue.replaceAll("[^\\d]", ""));
-
-                  //        /^(?!\.$)([0-9]{3}\.[0-9]{2})$/    \d*  [^\d]
-              }
-          }
-      });
+System.out.println(TableTechnic.getSelectionModel().getSelectedItem());
 
 
+        Pattern pattern4= Pattern.compile(".{0,50}");
+        TextFormatter formatter4 = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+            return pattern4.matcher(change.getControlNewText()).matches() ? change : null;
+        });
+        FieldNameTechnic.setTextFormatter(formatter4);
 
 
-        Pattern pattern= Pattern.compile("\\d{0,3}|\\d{0,3}+\\.(\\d{0,2})");
+        Pattern pattern3= Pattern.compile("\\d{0,6}");
+        TextFormatter formatter3 = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+            return pattern3.matcher(change.getControlNewText()).matches() ? change : null;
+        });
+        FieldFirstMilage.setTextFormatter(formatter3);
+
+
+
+
+        Pattern pattern2= Pattern.compile("\\d{0,6}");
+        TextFormatter formatter2 = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+            return pattern2.matcher(change.getControlNewText()).matches() ? change : null;
+        });
+        FieldPeriodOfService.setTextFormatter(formatter2);
+
+
+        Pattern pattern= Pattern.compile("\\d{0,1}|\\d{0,1}+\\.(\\d{0,2})");
         TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return pattern.matcher(change.getControlNewText()).matches() ? change : null;
         });
-        FieldPeriodMilage.setTextFormatter(formatter);
+        FieldIndexEngineHours.setTextFormatter(formatter);
 
     }
+
+
 }
