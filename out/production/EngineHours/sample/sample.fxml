@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -30,9 +32,21 @@
       </Label>
       <TableView fx:id="TableTechnic" layoutX="14.0" layoutY="402.0" prefHeight="200.0" prefWidth="674.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="ID" />
-          <TableColumn prefWidth="75.0" text="Name" />
+          <TableColumn fx:id="tb_id" prefWidth="61.0" text="ID" />
+          <TableColumn fx:id="tb_name" prefWidth="89.0" text="Name" />
+            <TableColumn fx:id="tb_first_milage" prefWidth="75.0" text="Начальный пробег " />
+            <TableColumn fx:id="tb_period_of_service" prefWidth="75.0" text="Период ТО" />
+            <TableColumn fx:id="tb_index_of_engine_hours" prefWidth="75.0" text="Коефициент машино часов" />
+            <TableColumn fx:id="tb_full_engine_hours" prefWidth="175.0" text="Полный пробег " />
+            <TableColumn fx:id="tb_next_service_milage" prefWidth="123.0" text="Следующий ТО" />
         </columns>
+         <contextMenu>
+            <ContextMenu fx:id="ContextMenuTable">
+              <items>
+                <MenuItem fx:id="ContextItemDelete" mnemonicParsing="false" onAction="#ContextItemDeleteClick" text="Удалить выделенную строку" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
       </TableView>
    </children>
 </AnchorPane>

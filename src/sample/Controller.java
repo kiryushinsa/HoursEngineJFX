@@ -1,21 +1,20 @@
 package sample;
 
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
-import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseEvent;
 
 public class Controller  {
 
@@ -42,7 +41,36 @@ public class Controller  {
     private TextField FieldIndexEngineHours;
 
     @FXML
-    private TableView <?> TableTechnic;
+    private TableView <TechnicReceiveData> TableTechnic;
+
+    @FXML
+    private TableColumn<TechnicReceiveData, String> tb_id;
+
+    @FXML
+    private TableColumn<TechnicReceiveData, String> tb_name;
+
+    @FXML
+    private TableColumn<TechnicReceiveData, String> tb_first_milage;
+
+    @FXML
+    private TableColumn<TechnicReceiveData, String> tb_period_of_service;
+
+    @FXML
+    private TableColumn<TechnicReceiveData,String> tb_index_of_engine_hours;
+
+    @FXML
+    private TableColumn<TechnicReceiveData, String> tb_full_engine_hours;
+
+    @FXML
+    private TableColumn<TechnicReceiveData, String> tb_next_service_milage;
+
+    private   ObservableList <TechnicReceiveData> DataSelectTechnic = FXCollections.observableArrayList();
+
+    @FXML
+    private ContextMenu ContextMenuTable;
+
+    @FXML
+    private MenuItem ContextItemDelete;
 
     @FXML
     void initialize() {
@@ -52,7 +80,8 @@ public class Controller  {
 
                   try {
 
-                      Handler.addTech(FieldNameTechnic.getText(), Integer.parseInt(FieldFirstMilage.getText()) ,Integer.parseInt(FieldPeriodOfService.getText()),Double.parseDouble(FieldIndexEngineHours.getText()));
+                      Handler.addTechnic(FieldNameTechnic.getText(), Integer.parseInt(FieldFirstMilage.getText()) ,Integer.parseInt(FieldPeriodOfService.getText()),Double.parseDouble(FieldIndexEngineHours.getText()));
+                      FillTableView();
 
                   } catch (SQLException e) {
                       e.printStackTrace();
@@ -69,14 +98,23 @@ public class Controller  {
                       alert.showAndWait();
                   }
 
-
-
-
               }  );
 
-System.out.println(TableTechnic.getSelectionModel().getSelectedItem());
+        tb_id.setCellValueFactory(cell->cell.getValue().technic_idProperty());
+        tb_name.setCellValueFactory(cell -> cell.getValue().nameProperty());
+        tb_first_milage.setCellValueFactory(cell->cell.getValue().first_milageProperty());
+        tb_period_of_service.setCellValueFactory(cell -> cell.getValue().period_of_serviceProperty());
+        tb_index_of_engine_hours.setCellValueFactory(cell->cell.getValue().index_engine_hoursProperty());
+        tb_full_engine_hours.setCellValueFactory(cell -> cell.getValue().full_engine_hoursProperty());
+        tb_next_service_milage.setCellValueFactory(cell->cell.getValue().next_service_milageProperty());
+
+        FillTableView();
 
 
+
+
+
+// Ниже идет блок с обработчиком вводимых значений для полей ввода
         Pattern pattern4= Pattern.compile(".{0,50}");
         TextFormatter formatter4 = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return pattern4.matcher(change.getControlNewText()).matches() ? change : null;
@@ -109,4 +147,64 @@ System.out.println(TableTechnic.getSelectionModel().getSelectedItem());
     }
 
 
+
+    private void FillTableView()
+    {
+
+        TableTechnic.getItems().clear();
+        DataBaseHandler Query = new DataBaseHandler();
+
+        try {
+            Query.getAllRowsTechnic(DataSelectTechnic);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        TableTechnic.setItems(DataSelectTechnic);
+
+
+    }
+    public void TableTechnic(MouseEvent mouseEvent)
+    {
+                TableTechnic.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+                    @Override
+                    public void handle(ContextMenuEvent event) {
+                        ContextMenuTable.show(TableTechnic,event.getScreenX(),event.getScreenY());
+
+                    }
+                });
+    }
+
+
+    public void ContextItemDeleteClick(ActionEvent actionEvent) throws SQLException, ClassNotFoundException, java.lang.RuntimeException {
+        TechnicReceiveData  selectedRow= TableTechnic.getSelectionModel().getSelectedItem();
+        System.out.println(selectedRow.getTechnic_id());
+        DataBaseHandler Delete = new DataBaseHandler();
+
+
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Внимание");
+        alert.setHeaderText("Удалить запись с идентификатором: "+selectedRow.getTechnic_id());
+        Optional<ButtonType> option= alert.showAndWait();
+
+        if(option.get()==null) {                 }
+
+        else if(option.get()==ButtonType.OK)
+        {
+            Delete.deleteTechnicRow(selectedRow.getTechnic_id());
+            FillTableView();
+
+            }
+        else if(option.get()==ButtonType.CANCEL){ }
+
+
+
+
+
+
+    }
 }
+
+
