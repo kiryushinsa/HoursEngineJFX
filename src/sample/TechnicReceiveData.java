@@ -5,12 +5,12 @@ import javafx.beans.property.*;
 public class TechnicReceiveData
 {
     private final StringProperty technic_id;
-    public final StringProperty name;
-    public final StringProperty first_milage;
-    public final StringProperty period_of_service;
-    public final StringProperty index_engine_hours;
-    public final StringProperty full_engine_hours;
-    public final StringProperty next_service_milage;
+    private final StringProperty name;
+    private final StringProperty first_milage;
+    private final StringProperty period_of_service;
+    private final StringProperty index_engine_hours;
+    private final StringProperty full_engine_hours;
+    private final StringProperty next_service_milage;
 
 
 

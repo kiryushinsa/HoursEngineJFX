@@ -3,7 +3,6 @@ package sample;
 import java.sql.*;
 
 import javafx.collections.ObservableList;
-import org.postgresql.Driver;
 
 public class DataBaseHandler extends  Configs
 {
@@ -32,11 +31,11 @@ public static void main(String[] args)
     }
 
 
-    public void addTechnic(String name_technic, Integer first_milage, Integer period_of_service, double index_engine_hours) throws SQLException, ClassNotFoundException
+    public void setTechnic(String name_technic, Integer first_milage, Integer period_of_service, double index_engine_hours) throws SQLException, ClassNotFoundException
     {
         Connection Connect = getDbConnection();
 
-        PreparedStatement Insert = Connect.prepareStatement("INSERT INTO "+ USER_TABLE + " "+ TechnicColumns + "VALUES(?,?,?,?,?,?)");
+        PreparedStatement Insert = Connect.prepareStatement("INSERT INTO "+ TECHNIC_TABLE + " "+ TechnicColumns + "VALUES(?,?,?,?,?,?)");
         Insert.setString(1, name_technic);
         Insert.setInt(2,first_milage);
         Insert.setInt(3,period_of_service);
@@ -45,7 +44,8 @@ public static void main(String[] args)
         Insert.setDouble(6, first_milage+period_of_service);
 
         Insert.executeUpdate();
-        System.out.println(" insert welldone");
+        Insert.close();
+
 
 
 Connect.close();
@@ -88,4 +88,25 @@ Connect.close();
         Statement.close();
 
     }
+
+    public void setJournalUsing(String date, String time, Integer id_technics, String order, String note) throws SQLException, ClassNotFoundException {
+        Connection Connect = getDbConnection();
+        PreparedStatement Insert = Connect.prepareStatement("INSERT INTO"+ JUSING_TABLE +"" + JUSINGColumns + "VALUES(?,?,?,?,?)");
+        Insert.setString(1,date);
+        Insert.setString(2,time);
+        Insert.setInt(3,id_technics);
+        Insert.setString(4,order);
+        Insert.setString(5,note);
+
+        Insert.executeUpdate();
+        Insert.close();
+        Connect.close();
+
+
+    }
+
+
+
+
+
 }

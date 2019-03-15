@@ -16,7 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 
-public class Controller  {
+public class MenuTechnicController {
 
 
     @FXML
@@ -80,7 +80,7 @@ public class Controller  {
 
                   try {
 
-                      Handler.addTechnic(FieldNameTechnic.getText(), Integer.parseInt(FieldFirstMilage.getText()) ,Integer.parseInt(FieldPeriodOfService.getText()),Double.parseDouble(FieldIndexEngineHours.getText()));
+                      Handler.setTechnic(FieldNameTechnic.getText(), Integer.parseInt(FieldFirstMilage.getText()) ,Integer.parseInt(FieldPeriodOfService.getText()),Double.parseDouble(FieldIndexEngineHours.getText()));
                       FillTableView();
 
                   } catch (SQLException e) {
