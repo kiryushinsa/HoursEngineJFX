@@ -15,7 +15,6 @@ public class TechnicReceiveData
 
 
 
-
     public TechnicReceiveData(String technic_id, String name, String first_milage, String period_of_service, String index_engine_hours, String full_engine_hours, String next_service_milage) {
         this.technic_id = new SimpleStringProperty(technic_id);
         this.name = new SimpleStringProperty(name);

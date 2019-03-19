@@ -112,37 +112,33 @@ public class MenuTechnicController {
 
 
 
-
-
 // Ниже идет блок с обработчиком вводимых значений для полей ввода
-        Pattern pattern4= Pattern.compile(".{0,50}");
-        TextFormatter formatter4 = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
-            return pattern4.matcher(change.getControlNewText()).matches() ? change : null;
-        });
-        FieldNameTechnic.setTextFormatter(formatter4);
+            Pattern pattern4 = Pattern.compile(".{0,50}");
+            TextFormatter formatter4 = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+                return pattern4.matcher(change.getControlNewText()).matches() ? change : null;
+            });
+            FieldNameTechnic.setTextFormatter(formatter4);
 
 
-        Pattern pattern3= Pattern.compile("\\d{0,6}");
-        TextFormatter formatter3 = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
-            return pattern3.matcher(change.getControlNewText()).matches() ? change : null;
-        });
-        FieldFirstMilage.setTextFormatter(formatter3);
+            Pattern pattern3 = Pattern.compile("\\d{0,6}");
+            TextFormatter formatter3 = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+                return pattern3.matcher(change.getControlNewText()).matches() ? change : null;
+            });
+            FieldFirstMilage.setTextFormatter(formatter3);
 
 
+            Pattern pattern2 = Pattern.compile("\\d{0,6}");
+            TextFormatter formatter2 = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+                return pattern2.matcher(change.getControlNewText()).matches() ? change : null;
+            });
+            FieldPeriodOfService.setTextFormatter(formatter2);
 
 
-        Pattern pattern2= Pattern.compile("\\d{0,6}");
-        TextFormatter formatter2 = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
-            return pattern2.matcher(change.getControlNewText()).matches() ? change : null;
-        });
-        FieldPeriodOfService.setTextFormatter(formatter2);
-
-
-        Pattern pattern= Pattern.compile("\\d{0,1}|\\d{0,1}+\\.(\\d{0,2})");
-        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
-            return pattern.matcher(change.getControlNewText()).matches() ? change : null;
-        });
-        FieldIndexEngineHours.setTextFormatter(formatter);
+            Pattern pattern = Pattern.compile("\\d{0,1}|\\d{0,1}+\\.(\\d{0,2})");
+            TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+                return pattern.matcher(change.getControlNewText()).matches() ? change : null;
+            });
+            FieldIndexEngineHours.setTextFormatter(formatter);
 
     }
 

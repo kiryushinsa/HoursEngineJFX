@@ -10,9 +10,9 @@ public class Configs
 
     protected  String TECHNIC_TABLE ="technic";
     protected  String JUSING_TABLE ="journal_using";
-  protected String TechnicColumns ="(name_technic,first_milage,period_of_service,index_engine_hours,full_engine_hours,next_service_milage)";
+    protected String TechnicColumns ="(name_technic,first_milage,period_of_service,index_engine_hours,full_engine_hours,next_service_milage)";
 
-    protected String JUSINGColumns ="(filling_date ,filling_time,id_technic,order_on_task,comment_of_using)";
+    protected String JUSINGColumns ="(filling_date ,filling_time,id_technic,work_time,order_on_task,comment_of_using)";
 
 
 }

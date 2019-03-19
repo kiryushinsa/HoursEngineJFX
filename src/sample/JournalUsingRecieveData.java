@@ -9,8 +9,22 @@ public class JournalUsingRecieveData
     private final StringProperty filling_date;
     private final StringProperty filling_time;
     private final StringProperty id_technic;
+    private final StringProperty work_time;
     private final StringProperty order_on_task;
     private final StringProperty comment_of_using;
+
+    public String getWork_time() {
+        return work_time.get();
+    }
+
+    public StringProperty work_timeProperty() {
+        return work_time;
+    }
+
+    public void setWork_time(String work_time) {
+        this.work_time.set(work_time);
+    }
+
 
     public String getId_note() {
         return id_note.get();
@@ -87,12 +101,13 @@ public class JournalUsingRecieveData
 
 
 
-    public JournalUsingRecieveData(String id_note, String filling_date, String filling_time, String id_technic, String order_on_task, String comment_of_using)
+    public JournalUsingRecieveData(String id_note, String filling_date, String filling_time, String id_technic,String work_time, String order_on_task, String comment_of_using)
     {
         this.id_note = new SimpleStringProperty(id_note);
         this.filling_date =new SimpleStringProperty( filling_date);
         this.filling_time = new SimpleStringProperty(filling_time);
         this.id_technic = new SimpleStringProperty(id_technic);
+        this.work_time = new SimpleStringProperty(work_time);
         this.order_on_task = new SimpleStringProperty(order_on_task);
         this.comment_of_using = new SimpleStringProperty(comment_of_using);
     }
