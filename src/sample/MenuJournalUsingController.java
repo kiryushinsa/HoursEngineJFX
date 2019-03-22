@@ -12,8 +12,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseEvent;
 
 public class MenuJournalUsingController {
 
@@ -98,6 +102,12 @@ public class MenuJournalUsingController {
 
 
     @FXML
+    private ContextMenu ContextMenuTable;
+
+    @FXML
+    private MenuItem ContextItemDelete;
+
+    @FXML
     void initialize() throws SQLException, ClassNotFoundException
     {
         DateUsing.setValue(LocalDate.now());
@@ -116,7 +126,7 @@ public class MenuJournalUsingController {
 
         ButtonSend.setOnAction(event ->
         {
-            DataBaseHandler insertBase = new DataBaseHandler();
+            DataBaseHandler Handler = new DataBaseHandler();
 
             LocalDate CurrentDateFromPicker = DateUsing.getValue();
             Date CurrentDate =  convertToDateViaSqlDate(CurrentDateFromPicker);
@@ -125,8 +135,11 @@ public class MenuJournalUsingController {
             Number Minutes = SliderMinutes.getValue();
             LocalTime CurrentTime = LocalTime.of( Hours.intValue(),Minutes.intValue());
 
+
+
             try {
-                insertBase.setJournalUsing(CurrentDate,CurrentTime, getChoiceBoxTechnicID(),Integer.parseInt(TextFieldUsingTime.getText()),TextFieldOrder.getText(),TextAreaNote.getText());
+                Handler.setJournalUsing(CurrentDate,CurrentTime, getChoiceBoxTechnicID(),Integer.parseInt(TextFieldUsingTime.getText()),TextFieldOrder.getText(),TextAreaNote.getText());
+                Handler.updateTechnicAfterUsing(getChoiceBoxTechnicID(),Integer.parseInt(TextFieldUsingTime.getText()));
             } catch (SQLException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -187,6 +200,8 @@ public class MenuJournalUsingController {
         });
 
 //конец intialize
+
+
     }
 
 
@@ -197,17 +212,22 @@ public class MenuJournalUsingController {
         ChoiseBoxTechnics.getSelectionModel().select(0);
     }
 
+
+
     public Date convertToDateViaSqlDate(LocalDate dateToConvert) {
         return java.sql.Date.valueOf(dateToConvert);
     }
+
+
+
  public Integer getChoiceBoxTechnicID()
  {
     return Map.get(ChoiseBoxTechnics.getValue());
  }
 
+
     private void FillTableView()
     {
-
         TableViewJournalUsing.getItems().clear();
         DataBaseHandler Query = new DataBaseHandler();
 
@@ -219,7 +239,42 @@ public class MenuJournalUsingController {
             e.printStackTrace();
         }
 
-        TableViewJournalUsing.setItems(DataSelectJusing);
+        TableViewJournalUsing.setItems(DataSelectJusing); }
+
+
+    public void TableViewJournalUsing(MouseEvent mouseEvent)
+    {
+        TableViewJournalUsing.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+            @Override
+            public void handle(ContextMenuEvent event) {
+                ContextMenuTable.show(TableViewJournalUsing,event.getScreenX(),event.getScreenY());
+
+            }
+        });
+    }
+
+
+    public void ContextItemDeleteClick(ActionEvent actionEvent) throws SQLException, ClassNotFoundException, java.lang.RuntimeException {
+        JournalUsingRecieveData  selectedRow= TableViewJournalUsing.getSelectionModel().getSelectedItem();
+        System.out.println(selectedRow.getId_note());
+        DataBaseHandler Delete = new DataBaseHandler();
+
+
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Внимание");
+        alert.setHeaderText("Удалить запись с идентификатором: "+selectedRow.getId_note());
+        Optional<ButtonType> option= alert.showAndWait();
+
+        if(option.get()==null) {                 }
+
+        else if(option.get()==ButtonType.OK)
+        {
+            Delete.deleteJusingRow(selectedRow.getId_note());
+            FillTableView();
+
+        }
+        else if(option.get()==ButtonType.CANCEL) { }
 
 
     }
