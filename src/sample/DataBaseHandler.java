@@ -85,20 +85,23 @@ Connect.close();
     {
         Connection Connect = getDbConnection();
         Statement Statement = Connect.createStatement();
+        Statement.executeUpdate("DELETE FROM journal_using WHERE id_technic=" +row_id);
+        Statement.executeUpdate("DELETE FROM journal_tech_service WHERE id_technic=" +row_id);
         Statement.executeUpdate("DELETE FROM technic WHERE technic_id=" +row_id);
+
         Connect.close();
         Statement.close();
 
     }
 
-    public void setJournalUsing(java.util.Date date, LocalTime time, Integer id_technics, Integer usingtime,String order, String note) throws SQLException, ClassNotFoundException {
+    public void setJournalUsing(java.util.Date date, LocalTime time, Integer id_technics, Double usingtime,String order, String note) throws SQLException, ClassNotFoundException {
         Connection Connect = getDbConnection();
         PreparedStatement Insert = Connect.prepareStatement("INSERT INTO "+ JUSING_TABLE +"" + JUSINGColumns + "VALUES(?,?,?,?,?,?)");
 
         Insert.setObject(1,date);
         Insert.setObject(2,time);
         Insert.setInt(3,id_technics);
-        Insert.setInt(4,usingtime);
+        Insert.setDouble(4,usingtime);
         Insert.setString(5,order);
         Insert.setString(6,note);
 
@@ -153,11 +156,12 @@ Connect.close();
 
     }
 
-    public void deleteJusingRow(String row_id) throws SQLException, ClassNotFoundException
+    public void deleteJusingRow(String row_id,Integer id_technic, Integer milage ) throws SQLException, ClassNotFoundException
     {
         Connection Connect = getDbConnection();
         Statement Statement = Connect.createStatement();
         Statement.executeUpdate("DELETE FROM journal_using WHERE id_note=" + row_id);
+        Statement.executeUpdate( "UPDATE technic SET full_engine_hours=full_engine_hours-" + milage +"WHERE id_technic="+ id_technic);
         Connect.close();
         Statement.close();
 
@@ -216,11 +220,12 @@ Connect.close();
     }
 
 
-    public void deleteJToRow(String row_id) throws SQLException, ClassNotFoundException
+    public void deleteJToRow(String row_id, boolean reset) throws SQLException, ClassNotFoundException
     {
         Connection Connect = getDbConnection();
         Statement Statement = Connect.createStatement();
         Statement.executeUpdate("DELETE FROM journal_tech_service WHERE id_tech=" + row_id);
+        if(reset){Statement.executeUpdate("UPDATE technic SET next_service_milage=(next_service_milage)-period_of_service WHERE technic_id="+ row_id);}
         Connect.close();
         Statement.close();
 
@@ -236,10 +241,10 @@ Connect.close();
 
     }
 
-    public void updateTechnicAfterUsing(Integer id_technic,Integer milage) throws SQLException, ClassNotFoundException {
+    public void updateTechnicAfterUsing(Integer id_technic,Double milage) throws SQLException, ClassNotFoundException {
         Connection Connect = getDbConnection();
         PreparedStatement Update = Connect.prepareStatement("UPDATE technic SET full_engine_hours = full_engine_hours +(?*index_engine_hours) WHERE technic_id = ? ");
-        Update.setInt(1,milage);
+        Update.setDouble(1,milage);
         Update.setInt(2,id_technic);
         Update.executeUpdate();
         Update.close();
@@ -266,7 +271,7 @@ Connect.close();
 
         Integer id  = SELECT.getInt("technic_id");
             String name = SELECT.getString("name_technic");
-                    Integer index  = SELECT.getInt("index_engine_hours");
+                    Double index  = SELECT.getDouble("index_engine_hours");
                             Integer hours  = SELECT.getInt("full_engine_hours");
                                     Integer period = SELECT.getInt("period_of_service");
                                             String  date = SELECT.getString("filling_date");

@@ -26,19 +26,21 @@ public class MenuTechnicController {
     private URL location;
 
     @FXML
-    private TextField FieldPeriodOfService;
-
-    @FXML
     private TextField FieldNameTechnic;
 
     @FXML
     private TextField FieldFirstMilage;
 
     @FXML
-    private Button ButtonSend;
+    private TextField FieldPeriodOfService;
 
     @FXML
     private TextField FieldIndexEngineHours;
+
+    @FXML
+    private Button ButtonSend;
+
+
 
     @FXML
     private TableView <TechnicReceiveData> TableTechnic;

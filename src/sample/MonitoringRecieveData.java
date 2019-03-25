@@ -20,7 +20,7 @@ public class MonitoringRecieveData
     private final StringProperty next_service_milage;
 
 
-    public MonitoringRecieveData(Integer technic_id, String name_technic, Integer index_engine_hours, Integer full_engine_hours, Integer period_of_service, String filling_date, String filling_time, String service_manager,Integer next_service_milage) {
+    public MonitoringRecieveData(Integer technic_id, String name_technic, Double index_engine_hours, Integer full_engine_hours, Integer period_of_service, String filling_date, String filling_time, String service_manager,Integer next_service_milage) {
         this.technic_id = new SimpleStringProperty(String.valueOf(technic_id));
         this.name_technic = new SimpleStringProperty(name_technic);
         this.index_engine_hours = new SimpleStringProperty(String.valueOf(index_engine_hours));

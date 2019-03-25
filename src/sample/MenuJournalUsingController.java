@@ -107,12 +107,19 @@ public class MenuJournalUsingController {
     @FXML
     private MenuItem ContextItemDelete;
 
+
+    @FXML
+    private Button ButtonUpdate;
+
     @FXML
     void initialize() throws SQLException, ClassNotFoundException
     {
         DateUsing.setValue(LocalDate.now());
             FillChoiceBox();
                 TextFieldUsingTime.setText("5");
+
+
+
 
         tb_id.setCellValueFactory(cell->cell.getValue().id_noteProperty());
         tb_date.setCellValueFactory(cell -> cell.getValue().filling_dateProperty());
@@ -121,8 +128,10 @@ public class MenuJournalUsingController {
         tb_using_time.setCellValueFactory(cell -> cell.getValue().work_timeProperty());
         tb_order.setCellValueFactory(cell->cell.getValue().order_on_taskProperty());
         tb_note.setCellValueFactory(cell -> cell.getValue().comment_of_usingProperty());
-
         FillTableView();
+
+
+//        ButtonUpdate.setOnAction(event -> FillTableView());
 
         ButtonSend.setOnAction(event ->
         {
@@ -135,11 +144,23 @@ public class MenuJournalUsingController {
             Number Minutes = SliderMinutes.getValue();
             LocalTime CurrentTime = LocalTime.of( Hours.intValue(),Minutes.intValue());
 
+            Double UsingTime =Double.parseDouble(TextFieldUsingTime.getText())/60  ;
+
 
 
             try {
-                Handler.setJournalUsing(CurrentDate,CurrentTime, getChoiceBoxTechnicID(),Integer.parseInt(TextFieldUsingTime.getText()),TextFieldOrder.getText(),TextAreaNote.getText());
-                Handler.updateTechnicAfterUsing(getChoiceBoxTechnicID(),Integer.parseInt(TextFieldUsingTime.getText()));
+                Handler.setJournalUsing(CurrentDate,CurrentTime, getChoiceBoxTechnicID(),UsingTime,TextFieldOrder.getText(),TextAreaNote.getText());
+                Handler.updateTechnicAfterUsing(getChoiceBoxTechnicID(),UsingTime);
+                FillTableView();
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Успешно");
+                alert.setHeaderText("Запись добавлена для" + getChoiceBoxTechnicID());
+
+                alert.showAndWait();
+
+
+
             } catch (SQLException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -270,7 +291,7 @@ public class MenuJournalUsingController {
 
         else if(option.get()==ButtonType.OK)
         {
-            Delete.deleteJusingRow(selectedRow.getId_note());
+            Delete.deleteJusingRow(selectedRow.getId_note(),Integer.parseInt(selectedRow.getId_technic()),Integer.parseInt(selectedRow.getWork_time()));
             FillTableView();
 
         }

@@ -153,6 +153,7 @@ public class MenuJournalTOController {
             {
                 try {
                     Handler.updateTechnicAfterTO(getChoiceBoxTechnicID());
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -263,11 +264,13 @@ public class MenuJournalTOController {
         Optional<ButtonType> option = alert.showAndWait();
 
         if (option.get() == null) {
-        } else if (option.get() == ButtonType.OK) {
-            Delete.deleteJToRow(selectedRow.getId_tech());
-            FillTableView();
+        } else if (option.get() == ButtonType.OK)
+        {
 
-        } else if (option.get() == ButtonType.CANCEL) {
-        }
+            if(selectedRow.getResetTO()=="Cброшено")  Delete.deleteJToRow(selectedRow.getId_tech(),true);
+            else {Delete.deleteJToRow(selectedRow.getId_tech(),false);}
+
+            FillTableView();
+        } else if (option.get() == ButtonType.CANCEL) {       }
     }
 }

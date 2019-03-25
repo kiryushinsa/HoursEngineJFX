@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception
     {
         Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
-        primaryStage.setTitle("Заполнить поле техника");
+        primaryStage.setTitle("Система мониторинга моточасов");
         Scene scene = new Scene(root, 1005, 614);
         scene.getStylesheets().add(0,"css/main.css");
         primaryStage.setScene(scene);

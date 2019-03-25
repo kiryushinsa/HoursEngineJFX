@@ -1,5 +1,6 @@
 package sample;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -7,8 +8,13 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class MainMenuController {
 
@@ -19,13 +25,22 @@ public class MainMenuController {
     private URL location;
 
     @FXML
-    private Menu Menu_technica;
+    private MenuItem Menu_Save;
 
     @FXML
-    private Menu Menu_journalTO;
+    private MenuItem Menu_Exit;
 
     @FXML
-    private Menu Menu_techUsing;
+    private MenuItem Menu_technica;
+
+    @FXML
+    private MenuItem Menu_journalTO;
+
+    @FXML
+    private MenuItem Menu_techUsing;
+
+    @FXML
+    private MenuItem Menu_Settings;
 
     @FXML
     private TableView<MonitoringRecieveData> TableMonitoring;
@@ -60,12 +75,60 @@ public class MainMenuController {
     void initialize()
     {
 
-Menu_journalTO.setOnAction(event ->
-{
 
-    
+                Menu_journalTO.setOnAction(event ->
+                {
+                    Parent root = null;
+                    try {
+                        root = FXMLLoader.load(getClass().getResource("MenuJournalTO.fxml"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Stage stageFrame = new Stage();
 
-});
+                    stageFrame.setScene(new Scene(root));
+                    stageFrame.initModality(Modality.APPLICATION_MODAL);
+                    stageFrame.show();
+                });
+
+
+                Menu_technica.setOnAction(event ->
+                {
+
+
+                        Parent root = null;
+                        try {
+                            root = FXMLLoader.load(getClass().getResource("MenuTechnic.fxml"));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Stage stageFrame = new Stage();
+                        stageFrame.setScene(new Scene(root));
+                        stageFrame.initModality(Modality.APPLICATION_MODAL);
+                        stageFrame.show();
+
+
+
+                });
+
+
+                Menu_techUsing.setOnAction(event -> {
+                    Parent root = null;
+                    try {
+                        root = FXMLLoader.load(getClass().getResource("MenuJournalUsing.fxml"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Stage stageFrame = new Stage();
+                    stageFrame.setScene(new Scene(root));
+                    stageFrame.initModality(Modality.APPLICATION_MODAL);
+                    stageFrame.show();
+
+
+
+                });
+
+
 
 
         tb_id.setCellValueFactory(cell->cell.getValue().technic_idProperty());

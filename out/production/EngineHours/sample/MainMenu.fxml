@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor" prefHeight="614.0" prefWidth="1005.0" styleClass="background" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainMenuController">
+<AnchorPane fx:id="anchor" prefHeight="614.0" prefWidth="1005.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainMenuController">
    <children>
       <Label layoutX="7.0" layoutY="37.0" prefHeight="47.0" prefWidth="481.0" styleClass="label-topics" text="Состояние технических средств" textFill="WHITE">
          <font>
@@ -16,11 +18,26 @@
          </font>
       </Label>
       <MenuBar layoutY="-1.0" prefHeight="27.0" prefWidth="1005.0">
-        <menus>
-          <Menu fx:id="Menu_technica" mnemonicParsing="false" text="Техника" />
-          <Menu fx:id="Menu_journalTO" mnemonicParsing="false" text="Журнал ТО" />
-          <Menu fx:id="Menu_techUsing" mnemonicParsing="false" text="Журнал использования тех.средств" />
-        </menus>
+         <menus>
+            <Menu mnemonicParsing="false" text="Файл ">
+               <items>
+                  <MenuItem fx:id="Menu_Save" mnemonicParsing="false" text="Сохранить " />
+                  <MenuItem fx:id="Menu_Exit" mnemonicParsing="false" text="Выход" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Журналы">
+              <items>
+                <MenuItem fx:id="Menu_technica" mnemonicParsing="false" text="Список техники" />
+                <MenuItem fx:id="Menu_journalTO" mnemonicParsing="false" text="Журнал технического осмотра" />
+                  <MenuItem fx:id="Menu_techUsing" mnemonicParsing="false" text="Журнал использования" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Настройки ">
+              <items>
+                <MenuItem fx:id="Menu_Settings" mnemonicParsing="false" text="Настройки подключения " />
+              </items>
+            </Menu>
+         </menus>
       </MenuBar>
       <TableView fx:id="TableMonitoring" layoutX="7.0" layoutY="95.0" prefHeight="514.0" prefWidth="986.0">
         <columns>
@@ -28,11 +45,12 @@
           <TableColumn fx:id="tb_name" prefWidth="131.0" text="Наименование" />
             <TableColumn fx:id="tb_date" prefWidth="134.0" text="Дата крайнего ТО" />
             <TableColumn fx:id="tb_fio" minWidth="5.0" prefWidth="97.0" text="ТО провел" />
-            <TableColumn fx:id="tb_index" prefWidth="124.0" text="Коеф.моточасов" />
+            <TableColumn fx:id="tb_index" editable="false" prefWidth="124.0" text="Коеф.моточасов" />
             <TableColumn fx:id="tb_fullEngine" prefWidth="121.0" text="Всего моточасов" />
             <TableColumn fx:id="tb_period_service" minWidth="20.0" prefWidth="177.0" text="Межсервисный интервал" />
             <TableColumn fx:id="tb_percent" prefWidth="140.0" text="\% до начала ТО" />
         </columns>
       </TableView>
+      <Button fx:id="ButtonUpdate" layoutX="912.0" layoutY="42.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="79.0" text="Обновить" />
    </children>
 </AnchorPane>

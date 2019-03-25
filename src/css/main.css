@@ -1,12 +1,96 @@
 
 
-#anchor
+
+
+.menu-bar
 {
-
-
--fx-background-color: linear-gradient(  #4B79A1,#283E51); 
-
+	-fx-background-color:white;
+	-fx:red;
+	
 }
+
+.menu-item
+{
+	
+	
+}
+
+
+.label-topics
+{
+	-fx-text-fill: white;	
+	
+	-fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;	
+}
+.choice-box
+{
+	-fx-text-fill:white;	
+	-fx-background-color:black;	 
+	-fx-border-color:white;
+}
+
+
+.choice-box .label
+{
+	-fx-background-color:black;
+	-fx-text-fill:white;	
+	
+}
+
+
+
+.button
+{
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 8, 0, 0, 0);
+	-fx-text-fill:black;	
+	-fx-background-radius: 15;	 
+	-fx-background-color:#4B79A1;	 
+}
+
+.backImage
+{
+	-fx-background-color: linear-gradient(  #4B79A1,#283E51); 
+}
+
+.text-field
+{
+	-fx-text-fill: white;
+    -fx-control-inner-background: black;
+    -fx-highlight-fill: white;
+    -fx-highlight-text-fill: black;
+}
+
+
+.text-field:disabled
+{
+	-fx-opacity: 1.0;
+}
+
+
+.text-area
+{
+	-fx-text-fill: white;
+    -fx-control-inner-background: black;
+    -fx-highlight-fill: white;
+    -fx-highlight-text-fill: black;
+	
+}
+
+
+.anchorInput
+{
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 8, 0, 0, 0);
+	-fx-background-color:#4B79A1;
+	
+}
+
+.label-field
+{
+	-fx-text-fill: white;
+}
+
 
 .table-view .column-header .label {
     -fx-text-fill: black;
@@ -16,11 +100,46 @@
 .table-view  .column-header,
 .table-view .column-header .filler,
 .table-view .column-header-background .filler {
- -fx-background-color: #76b1ed;
+	-fx-background-color:black;
+	-fx-border-color:black;
 }
 
-.label-topics
+
+
+
+.table-view{
+   -fx-background-color: black;
+   
+}
+
+
+
+
+.table-view .column-header-background{
+    -fx-background-color: #3182c4;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell
 {
-	 -fx-text-fill: black;
+    -fx-text-fill: black;
+
+	
 	
 }
+
+
+
+
+
+
+
+
