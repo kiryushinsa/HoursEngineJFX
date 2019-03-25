@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor" prefHeight="614.0" prefWidth="1005.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainMenuController">
+<AnchorPane fx:id="anchor" prefHeight="614.0" prefWidth="1005.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainMenuController">
    <children>
       <Label layoutX="7.0" layoutY="37.0" prefHeight="47.0" prefWidth="481.0" styleClass="label-topics" text="Состояние технических средств" textFill="WHITE">
          <font>
@@ -19,12 +19,6 @@
       </Label>
       <MenuBar layoutY="-1.0" prefHeight="27.0" prefWidth="1005.0">
          <menus>
-            <Menu mnemonicParsing="false" text="Файл ">
-               <items>
-                  <MenuItem fx:id="Menu_Save" mnemonicParsing="false" text="Сохранить " />
-                  <MenuItem fx:id="Menu_Exit" mnemonicParsing="false" text="Выход" />
-               </items>
-            </Menu>
             <Menu mnemonicParsing="false" text="Журналы">
               <items>
                 <MenuItem fx:id="Menu_technica" mnemonicParsing="false" text="Список техники" />
@@ -51,6 +45,6 @@
             <TableColumn fx:id="tb_percent" prefWidth="140.0" text="\% до начала ТО" />
         </columns>
       </TableView>
-      <Button fx:id="ButtonUpdate" layoutX="912.0" layoutY="42.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="79.0" text="Обновить" />
+      <Button fx:id="ButtonUpdate" layoutX="869.0" layoutY="42.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="122.0" text="Обновить" />
    </children>
 </AnchorPane>

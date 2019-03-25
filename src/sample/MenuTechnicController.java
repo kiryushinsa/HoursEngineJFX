@@ -84,6 +84,7 @@ public class MenuTechnicController {
 
                       Handler.setTechnic(FieldNameTechnic.getText(), Integer.parseInt(FieldFirstMilage.getText()) ,Integer.parseInt(FieldPeriodOfService.getText()),Double.parseDouble(FieldIndexEngineHours.getText()));
                       FillTableView();
+                      messageSaveSuccesful();
 
                   } catch (SQLException e) {
                       e.printStackTrace();
@@ -201,6 +202,15 @@ public class MenuTechnicController {
 
 
 
+
+    }
+    private void messageSaveSuccesful()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Успешно");
+        alert.setHeaderText("Запись добавлена успешно");
+        alert.setContentText("");
+        alert.showAndWait();
 
     }
 }

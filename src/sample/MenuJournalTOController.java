@@ -153,6 +153,7 @@ public class MenuJournalTOController {
             {
                 try {
                     Handler.updateTechnicAfterTO(getChoiceBoxTechnicID());
+                    messageSaveSuccesful();
 
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -162,6 +163,7 @@ public class MenuJournalTOController {
             }
 
             try {
+
                 if(TextFieldServiceManager.getText()==null || TextFieldServiceManager.getText().trim().isEmpty())
                 {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -180,6 +182,10 @@ public class MenuJournalTOController {
             }
             catch (NumberFormatException e)
             {
+            }
+            finally {
+                Handler = null;
+
             }
 
         }  );
@@ -272,5 +278,15 @@ public class MenuJournalTOController {
 
             FillTableView();
         } else if (option.get() == ButtonType.CANCEL) {       }
+    }
+
+    private void messageSaveSuccesful()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Успешно");
+        alert.setHeaderText("Запись добавлена успешно");
+        alert.setContentText("");
+        alert.showAndWait();
+
     }
 }

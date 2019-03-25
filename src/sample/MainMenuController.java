@@ -71,10 +71,15 @@ public class MainMenuController {
 
     private ObservableList<MonitoringRecieveData> DataSelectMonitoring = FXCollections.observableArrayList();
 
+
+    @FXML
+    private Button ButtonUpdate;
+
     @FXML
     void initialize()
     {
 
+        ButtonUpdate.setOnAction(event -> {FillTableView();});
 
                 Menu_journalTO.setOnAction(event ->
                 {
@@ -140,7 +145,7 @@ public class MainMenuController {
         tb_period_service.setCellValueFactory(cell->cell.getValue().period_of_serviceProperty());
         tb_percent.setCellValueFactory(cell->cell.getValue().percent_of_loadProperty());
 
-        FilTableView();
+        FillTableView();
 
 
 
@@ -181,7 +186,7 @@ public class MainMenuController {
     }
 
 
-     private void FilTableView()
+     private void FillTableView()
      {
 
          TableMonitoring.getItems().clear();

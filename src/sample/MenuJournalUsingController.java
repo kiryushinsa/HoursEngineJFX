@@ -153,12 +153,7 @@ public class MenuJournalUsingController {
                 Handler.updateTechnicAfterUsing(getChoiceBoxTechnicID(),UsingTime);
                 FillTableView();
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Успешно");
-                alert.setHeaderText("Запись добавлена для" + getChoiceBoxTechnicID());
-
-                alert.showAndWait();
-
+                messageSaveSuccesful();
 
 
             } catch (SQLException e) {
@@ -299,5 +294,13 @@ public class MenuJournalUsingController {
 
 
     }
+    private void messageSaveSuccesful()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Успешно");
+        alert.setHeaderText("Запись добавлена успешно");
+        alert.setContentText("");
+        alert.showAndWait();
 
+    }
 }

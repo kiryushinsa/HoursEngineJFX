@@ -283,6 +283,39 @@ Connect.close();
 
         }
 
+        //вторая серия для тех машин у которых нет связей в таблицах
+        //
+
+        SELECT = Statement.executeQuery("\n" +
+                "SELECT t1.technic_id,t1.name_technic,t1.index_engine_hours,\n" +
+                "t1.full_engine_hours,t1.period_of_service,t1.next_service_milage\n" +
+                "FROM technic t1\n");
+
+
+        while (SELECT.next())
+        {
+
+
+            Integer id  = SELECT.getInt("technic_id");
+            String name = SELECT.getString("name_technic");
+            Double index  = SELECT.getDouble("index_engine_hours");
+            Integer hours  = SELECT.getInt("full_engine_hours");
+            Integer period = SELECT.getInt("period_of_service");
+            String  date = "Отсутствует";
+            String time  = "Отсутствует";
+            String manager  = "Не проводил";
+            Integer nextToMilage = SELECT.getInt("next_service_milage");
+
+
+
+            if (!SelectionChecker.contains(id))
+            {
+                Data.add(new MonitoringRecieveData(id, name, index, hours, period, date, time, manager, nextToMilage));
+                SelectionChecker.add(id);
+            }
+
+        }
+
          SelectionChecker.clear();
             Connect.close();
                  Statement.close();
