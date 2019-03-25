@@ -60,6 +60,13 @@ public class MainMenuController {
     void initialize()
     {
 
+Menu_journalTO.setOnAction(event ->
+{
+
+    
+
+});
+
 
         tb_id.setCellValueFactory(cell->cell.getValue().technic_idProperty());
         tb_name.setCellValueFactory(cell -> cell.getValue().name_technicProperty());

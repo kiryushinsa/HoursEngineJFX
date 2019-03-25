@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane styleClass="gtg" prefHeight="614.0" prefWidth="1005.0"  xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainMenuController">
+<AnchorPane fx:id="anchor" prefHeight="614.0" prefWidth="1005.0" styleClass="background" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainMenuController">
    <children>
-      <Label layoutX="7.0" layoutY="37.0" prefHeight="47.0" prefWidth="481.0" text="Состояние технических средств" textFill="WHITE">
+      <Label layoutX="7.0" layoutY="37.0" prefHeight="47.0" prefWidth="481.0" styleClass="label-topics" text="Состояние технических средств" textFill="WHITE">
          <font>
             <Font size="32.0" />
          </font>
@@ -22,7 +22,7 @@
           <Menu fx:id="Menu_techUsing" mnemonicParsing="false" text="Журнал использования тех.средств" />
         </menus>
       </MenuBar>
-      <TableView fx:id="TableMonitoring" layoutX="7.0" layoutY="95.0" opacity="0.93" prefHeight="514.0" prefWidth="986.0">
+      <TableView fx:id="TableMonitoring" layoutX="7.0" layoutY="95.0" prefHeight="514.0" prefWidth="986.0">
         <columns>
           <TableColumn fx:id="tb_id" prefWidth="61.0" text="id" />
           <TableColumn fx:id="tb_name" prefWidth="131.0" text="Наименование" />

@@ -1,6 +1,26 @@
 
 
-.gtg
+#anchor
 {
--fx-background-color: blue ;
+
+
+-fx-background-color: linear-gradient(  #4B79A1,#283E51); 
+
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+.table-view  .column-header,
+.table-view .column-header .filler,
+.table-view .column-header-background .filler {
+ -fx-background-color: linear-gradient(#94d4fc,#88a5ce);
+}
+
+.label-topics
+{
+	 -fx-text-fill: black;
+	
 }

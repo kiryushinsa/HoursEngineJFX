@@ -2,9 +2,9 @@ package sample;
 
 public class Configs
 {
-    protected String dbHost="localhost";
+    protected String dbHost="192.168.95.98";
     protected String dbport="5432" ;
-    protected String dbUser="user";
+    protected String dbUser="admin";
     protected String dbPassword="vsks";
     protected String dbName="enginehours";
 
