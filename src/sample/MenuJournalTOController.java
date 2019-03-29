@@ -109,6 +109,9 @@ public class MenuJournalTOController {
 
 
     @FXML
+    private sample.MainMenuController Parent=null;
+
+    @FXML
     void initialize()
     {
         try {
@@ -118,6 +121,8 @@ public class MenuJournalTOController {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+
         DateUsing.setValue(LocalDate.now());
 
 
@@ -149,18 +154,18 @@ public class MenuJournalTOController {
             LocalTime CurrentTime = LocalTime.of( Hours.intValue(),Minutes.intValue());
 
 
-            if(CheckerReset.isSelected() == true)
-            {
-                try {
-                    Handler.updateTechnicAfterTO(getChoiceBoxTechnicID());
-                    messageSaveSuccesful();
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
+//            if(CheckerReset.isSelected() == true)
+//            {
+//                try {
+//                    Handler.updateTechnicAfterTO(getChoiceBoxTechnicID());
+//
+//
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                } catch (ClassNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//            }
 
             try {
 
@@ -172,8 +177,14 @@ public class MenuJournalTOController {
                     alert.setContentText("Заполните поле 'ФИО проводившего ТО'");
                     alert.showAndWait();}
 
-                else {   Handler.setJournalTo(CurrentDate,CurrentTime, getChoiceBoxTechnicID(),TextFieldServiceManager.getText(),TextFieldTypeTO.getText(),TextAreaNote.getText(),CheckerReset.isSelected());
-                   FillTableView();}
+                else
+                    {
+                    Handler.setJournalTo(CurrentDate,CurrentTime, getChoiceBoxTechnicID(),TextFieldServiceManager.getText(),TextFieldTypeTO.getText(),TextAreaNote.getText(),CheckerReset.isSelected());
+
+                            FillTableView();
+                                messageSaveSuccesful();
+
+                    }
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -253,7 +264,7 @@ public class MenuJournalTOController {
 
 
         TableViewJournalTO.setItems(DataSelectJTo);
-
+updateTableViewParentController();
 
     }
 
@@ -273,12 +284,30 @@ public class MenuJournalTOController {
         } else if (option.get() == ButtonType.OK)
         {
 
-            if(selectedRow.getResetTO()=="Cброшено")  Delete.deleteJToRow(selectedRow.getId_tech(),true);
-            else {Delete.deleteJToRow(selectedRow.getId_tech(),false);}
+            if(selectedRow.getResetTO()=="Cброшено")  Delete.deleteJToRow(selectedRow.getId_tech(),true,selectedRow.getId_tech());
+            else {Delete.deleteJToRow(selectedRow.getId_tech(),false,selectedRow.getId_tech());}
 
             FillTableView();
         } else if (option.get() == ButtonType.CANCEL) {       }
     }
+
+
+    public void setParentController(sample.MainMenuController MainController)
+    {
+        Parent = MainController;
+    }
+
+    protected sample.MainMenuController getParentController ()
+    {
+        return Parent;
+    }
+
+    protected void  updateTableViewParentController ()
+    {
+        if(Parent!=null) {  Parent.fillTableView();}
+    }
+
+
 
     private void messageSaveSuccesful()
     {

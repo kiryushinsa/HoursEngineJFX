@@ -34,12 +34,26 @@
 
 .choice-box .label
 {
-	-fx-background-color:black;
+
 	-fx-text-fill:white;	
 	
 }
 
+.choice-box .context-menu
+{ 
+	-fx-text-fill:white;	
+	-fx-background-color: black; 
+}
 
+.choice-box .menu-item:focused
+{ 
+	-fx-text-fill:white;	
+	-fx-background-color: #4B79A1; 
+}
+
+.choice-box .menu-item > .label { -fx-text-fill: white; }
+
+.choice-box .menu-item:focused > .label { -fx-text-fill: white; }
 
 .button
 {

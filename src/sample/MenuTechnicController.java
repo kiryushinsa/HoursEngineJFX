@@ -75,6 +75,9 @@ public class MenuTechnicController {
     private MenuItem ContextItemDelete;
 
     @FXML
+    private sample.MainMenuController Parent=null;
+
+    @FXML
     void initialize() {
       ButtonSend.setOnAction(event -> {
                   DataBaseHandler Handler = new DataBaseHandler();
@@ -147,7 +150,25 @@ public class MenuTechnicController {
 
 
 
-    private void FillTableView()
+    public void setParentController(sample.MainMenuController MainController)
+    {
+        Parent = MainController;
+    }
+
+    protected sample.MainMenuController getParentController ()
+    {
+        return Parent;
+    }
+
+    protected void  updateTableViewParentController ()
+    {
+        if(Parent!=null) {  Parent.fillTableView();}
+
+
+
+    }
+
+    protected void FillTableView()
     {
 
         TableTechnic.getItems().clear();
@@ -161,6 +182,8 @@ public class MenuTechnicController {
             e.printStackTrace();
         }
         TableTechnic.setItems(DataSelectTechnic);
+
+        updateTableViewParentController();
 
 
     }

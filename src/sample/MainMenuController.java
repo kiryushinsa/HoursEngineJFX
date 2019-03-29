@@ -5,14 +5,16 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -76,24 +78,51 @@ public class MainMenuController {
     private Button ButtonUpdate;
 
     @FXML
+    private Menu Journal;
+
+@FXML
+    public MainMenuController getController(){
+        return this;
+    }
+
+
+
+    @FXML
+    void click(ActionEvent event) {
+        System.out.println("klыыыыыk");
+    }
+
+    @FXML
     void initialize()
     {
 
-        ButtonUpdate.setOnAction(event -> {FillTableView();});
+
+
+        ButtonUpdate.setOnAction(event -> {
+            fillTableView();});
+
+        Journal.setOnAction(event -> {click(event);});
+
+       
 
                 Menu_journalTO.setOnAction(event ->
                 {
+
                     Parent root = null;
                     try {
-                        root = FXMLLoader.load(getClass().getResource("MenuJournalTO.fxml"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("MenuJournalTO.fxml"));
+                        root = loader.load();
+                        MenuJournalTOController example = (MenuJournalTOController) (loader.getController());
+                        example.setParentController(getController());
                     }
-                    Stage stageFrame = new Stage();
 
+                    catch (IOException e) { e.printStackTrace(); }
+
+                    Stage stageFrame = new Stage();
                     stageFrame.setScene(new Scene(root));
                     stageFrame.initModality(Modality.APPLICATION_MODAL);
                     stageFrame.show();
+
                 });
 
 
@@ -103,7 +132,14 @@ public class MainMenuController {
 
                         Parent root = null;
                         try {
-                            root = FXMLLoader.load(getClass().getResource("MenuTechnic.fxml"));
+
+                            FXMLLoader loader = new FXMLLoader(Main.class.getResource("MenuTechnic.fxml"));
+                            root = loader.load();
+                            MenuTechnicController example =(MenuTechnicController) loader.getController();
+                            example.setParentController(getController());
+
+
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -120,7 +156,12 @@ public class MainMenuController {
                 Menu_techUsing.setOnAction(event -> {
                     Parent root = null;
                     try {
-                        root = FXMLLoader.load(getClass().getResource("MenuJournalUsing.fxml"));
+                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("MenuJournalUsing.fxml"));
+                        root = loader.load();
+                        MenuJournalUsingController example =(MenuJournalUsingController) loader.getController();
+                        example.setParentController(getController());
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -145,48 +186,17 @@ public class MainMenuController {
         tb_period_service.setCellValueFactory(cell->cell.getValue().period_of_serviceProperty());
         tb_percent.setCellValueFactory(cell->cell.getValue().percent_of_loadProperty());
 
-        FillTableView();
+        fillTableView();
+    }
 
-
-
-        tb_percent.setCellFactory(column -> {
-
-            return new TableCell<MonitoringRecieveData, String>()
-            {
-                @Override
-                protected void updateItem(String item, boolean empty)
-                {
-                    super.updateItem(item, empty);
-
-                    setText(empty ? "" : getItem().toString());
-                    setGraphic(null);
-
-                    TableRow<MonitoringRecieveData> currentRow = getTableRow();
-                    Integer percentInt;
-
-                   try {
-                       percentInt = Integer.parseInt(item);
-
-                                 if (percentInt < 50) { currentRow.setStyle("-fx-background-color: #ace6c6"); }
-                                    else if (Integer.parseInt(item) < 90) { currentRow.setStyle("-fx-background-color:#f7ff99"); }
-                                        else if (percentInt == null) {  }
-                                            else {currentRow.setStyle("-fx-background-color:#ed4949"); }
-
-                        }
-                    catch (java.lang.NumberFormatException e){ }
-
-
-                }
-            };
-
-        });
-
-
+    protected void print()
+    {
+        System.out.println("вызывал метод");
 
     }
 
 
-     private void FillTableView()
+     protected void fillTableView()
      {
 
          TableMonitoring.getItems().clear();
@@ -200,6 +210,54 @@ public class MainMenuController {
              e.printStackTrace();
          }
          TableMonitoring.setItems(DataSelectMonitoring);
+
+
+         tb_percent.setCellFactory(column -> {
+
+
+
+
+             return new TableCell<MonitoringRecieveData, String>()
+             {
+                 @Override
+                 protected void updateItem(String item, boolean empty)
+                 {
+
+
+                     super.updateItem(item, empty);
+
+                     setText(empty ? "" : getItem().toString());
+                     setGraphic(null);
+
+                     TableRow<MonitoringRecieveData> currentRow = getTableRow();
+                     Double percentInt;
+
+                     try {
+
+                         try {
+                             percentInt = Double.parseDouble(item);
+                         }
+                         catch (java.lang.NullPointerException e){ percentInt=-1.0;}
+
+                         if (percentInt>=0.0 && percentInt < 50.0) { currentRow.setStyle("-fx-background-color: #ace6c6"); }
+                             else if (percentInt < 90.0 && percentInt > 50.0  ) { currentRow.setStyle("-fx-background-color:#f7ff99"); }
+                                 else if (percentInt == null || percentInt<0 ) {  }
+                                    else {currentRow.setStyle("-fx-background-color:#ed4949"); }
+
+
+
+
+                     }
+                     catch (java.lang.NumberFormatException e){ }
+
+
+                 }
+             };
+
+         });
+
+
+
 
      }
 }

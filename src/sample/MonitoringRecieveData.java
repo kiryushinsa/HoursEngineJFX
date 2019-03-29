@@ -1,7 +1,5 @@
 package sample;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -18,9 +16,22 @@ public class MonitoringRecieveData
     private final StringProperty service_manager;
     private final StringProperty percent_of_load;
     private final StringProperty next_service_milage;
+    private final StringProperty before_milage;
 
+    public String getBefore_milage() {
+        return before_milage.get();
+    }
 
-    public MonitoringRecieveData(Integer technic_id, String name_technic, Double index_engine_hours, Integer full_engine_hours, Integer period_of_service, String filling_date, String filling_time, String service_manager,Integer next_service_milage) {
+    public StringProperty before_milageProperty() {
+        return before_milage;
+    }
+
+    public void setBefore_milage(String before_milage) {
+        this.before_milage.set(before_milage);
+    }
+
+    public MonitoringRecieveData(Integer technic_id, String name_technic, Double index_engine_hours, Double full_engine_hours, Integer period_of_service, String filling_date, String filling_time, String service_manager, Integer next_service_milage,Double before_milage)
+    {
         this.technic_id = new SimpleStringProperty(String.valueOf(technic_id));
         this.name_technic = new SimpleStringProperty(name_technic);
         this.index_engine_hours = new SimpleStringProperty(String.valueOf(index_engine_hours));
@@ -30,7 +41,17 @@ public class MonitoringRecieveData
         this.filling_time = new SimpleStringProperty(filling_time);
         this.service_manager = new SimpleStringProperty(service_manager);
         this.next_service_milage = new SimpleStringProperty(String.valueOf(next_service_milage));
-        this.percent_of_load = new SimpleStringProperty(String.valueOf((full_engine_hours*100)/next_service_milage));
+        this.before_milage = new SimpleStringProperty(String.valueOf(before_milage));
+
+        Double percent;
+        if(full_engine_hours>next_service_milage){percent=(full_engine_hours * 100) / (next_service_milage);}
+        else { percent = ((full_engine_hours-before_milage) * 100) / (next_service_milage-before_milage);}
+
+        this.percent_of_load = new SimpleStringProperty(String.valueOf(Math.floor(percent * 100) / 100));
+
+
+
+
     }
 
 

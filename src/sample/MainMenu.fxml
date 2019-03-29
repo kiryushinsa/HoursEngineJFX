@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor" prefHeight="614.0" prefWidth="1005.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainMenuController">
+<AnchorPane fx:id="anchor" prefHeight="614.0" prefWidth="1005.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainMenuController">
    <children>
       <Label layoutX="7.0" layoutY="37.0" prefHeight="47.0" prefWidth="481.0" styleClass="label-topics" text="Состояние технических средств" textFill="WHITE">
          <font>
@@ -19,9 +19,9 @@
       </Label>
       <MenuBar layoutY="-1.0" prefHeight="27.0" prefWidth="1005.0">
          <menus>
-            <Menu mnemonicParsing="false" text="Журналы">
+            <Menu fx:id="Journal" mnemonicParsing="false" text="Журналы">
               <items>
-                <MenuItem fx:id="Menu_technica" mnemonicParsing="false" text="Список техники" />
+                <MenuItem fx:id="Menu_technica" mnemonicParsing="false" onAction="#click" text="Список техники" />
                 <MenuItem fx:id="Menu_journalTO" mnemonicParsing="false" text="Журнал технического осмотра" />
                   <MenuItem fx:id="Menu_techUsing" mnemonicParsing="false" text="Журнал использования" />
               </items>

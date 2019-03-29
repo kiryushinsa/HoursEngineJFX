@@ -1,7 +1,6 @@
 package sample;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,6 +86,7 @@ Connect.close();
         Statement Statement = Connect.createStatement();
         Statement.executeUpdate("DELETE FROM journal_using WHERE id_technic=" +row_id);
         Statement.executeUpdate("DELETE FROM journal_tech_service WHERE id_technic=" +row_id);
+        Statement.executeUpdate("DELETE FROM milage_list WHERE id_tech="+row_id);
         Statement.executeUpdate("DELETE FROM technic WHERE technic_id=" +row_id);
 
         Connect.close();
@@ -104,9 +104,23 @@ Connect.close();
         Insert.setDouble(4,usingtime);
         Insert.setString(5,order);
         Insert.setString(6,note);
-
         Insert.executeUpdate();
         Insert.close();
+
+        // добавление записи в таблицу хронологии пробега для корректного удаления из таблицы технического осмотра
+        Statement Statement= Connect.createStatement();
+            ResultSet SELECT = Statement.executeQuery("SELECT full_engine_hours FROM technic WHERE technic_id="+ id_technics);
+                    Double previos_milage=null;
+                        while(SELECT.next()){ previos_milage = SELECT.getDouble("full_engine_hours");}
+                            SELECT.close();
+
+
+        PreparedStatement InsertMilageList=Connect.prepareStatement("INSERT INTO milage_list (id_tech,milage) VALUES (?,?)");
+            InsertMilageList.setInt(1,id_technics);
+                InsertMilageList.setDouble(2,previos_milage);
+                    InsertMilageList.executeUpdate();
+                        InsertMilageList.close();
+
         Connect.close();
         System.out.println("execute in jornal_using  succesful");
 
@@ -156,12 +170,18 @@ Connect.close();
 
     }
 
-    public void deleteJusingRow(String row_id,Integer id_technic, Integer milage ) throws SQLException, ClassNotFoundException
+    public void deleteJusingRow(String row_id,Integer id_technic, Double milage ) throws SQLException, ClassNotFoundException
     {
         Connection Connect = getDbConnection();
         Statement Statement = Connect.createStatement();
         Statement.executeUpdate("DELETE FROM journal_using WHERE id_note=" + row_id);
-        Statement.executeUpdate( "UPDATE technic SET full_engine_hours=full_engine_hours-" + milage +"WHERE id_technic="+ id_technic);
+
+        PreparedStatement MilageTechnicCorrection = Connect.prepareStatement( "UPDATE technic SET full_engine_hours=full_engine_hours-(?*index_engine_hours) WHERE technic_id=?");
+        MilageTechnicCorrection.setDouble(1,milage);
+        MilageTechnicCorrection.setInt(2,id_technic);
+        MilageTechnicCorrection.executeUpdate();
+
+        MilageTechnicCorrection.close();
         Connect.close();
         Statement.close();
 
@@ -202,7 +222,7 @@ Connect.close();
 
     public void setJournalTo(java.util.Date date, LocalTime time, Integer id_technics, String fio,String type, String comment,Boolean reset) throws SQLException, ClassNotFoundException {
         Connection Connect = getDbConnection();
-        PreparedStatement Insert = Connect.prepareStatement("INSERT INTO "+ "journal_tech_service" +" " + JToColumns + "VALUES(?,?,?,?,?,?,?)");
+        PreparedStatement Insert = Connect.prepareStatement("INSERT INTO "+ "journal_tech_service" +" " + JToColumns + "VALUES(?,?,?,?,?,?,?,?,?)");
 
         Insert.setObject(1,date);
         Insert.setObject(2,time);
@@ -212,7 +232,23 @@ Connect.close();
         Insert.setString(6,comment);
         Insert.setBoolean(7,reset);
 
+
+            Statement Statement = Connect.createStatement();
+            ResultSet select = Statement.executeQuery("SELECT full_engine_hours,next_service_milage FROM technic WHERE technic_id=" + id_technics);
+
+            while (select.next())
+            {
+                Insert.setDouble(8, select.getDouble("full_engine_hours"));
+                Insert.setDouble(9, select.getDouble("next_service_milage"));
+            }
+
+
+
+
         Insert.executeUpdate();
+
+        Statement.close();
+        select.close();
         Insert.close();
         Connect.close();
         System.out.println("execute in jornal_to  succesful");
@@ -220,33 +256,51 @@ Connect.close();
     }
 
 
-    public void deleteJToRow(String row_id, boolean reset) throws SQLException, ClassNotFoundException
+    public void deleteJToRow(String row_id, boolean reset,String id_technic) throws SQLException, ClassNotFoundException
     {
         Connection Connect = getDbConnection();
         Statement Statement = Connect.createStatement();
+
+
+        if(reset) {
+
+            Statement query = Connect.createStatement();
+
+            ResultSet select = query.executeQuery("SELECT previos_service_to,id_tech FROM journal_tech_service WHERE id_technic="+id_technic+" ORDER BY id_tech desc limit 1" );
+             while(select.next())
+             {
+                 Integer id_tech= select.getInt("id_tech");
+                 Integer previos_service_to = select.getInt("previos_service_to");
+                 System.out.println(id_tech.toString());
+                    if(id_tech.toString()==row_id) {    Statement.executeUpdate("UPDATE technic SET next_service_milage=" + previos_service_to  +" WHERE technic_id="+ id_technic);    }
+             }
+
+
+        }
+
+
         Statement.executeUpdate("DELETE FROM journal_tech_service WHERE id_tech=" + row_id);
-        if(reset){Statement.executeUpdate("UPDATE technic SET next_service_milage=(next_service_milage)-period_of_service WHERE technic_id="+ row_id);}
+
+
         Connect.close();
         Statement.close();
 
     }
 
-    public void updateTechnicAfterTO(Integer id_technic) throws SQLException, ClassNotFoundException {
-        Connection Connect = getDbConnection();
-        PreparedStatement Update = Connect.prepareStatement("UPDATE technic SET next_service_milage = next_service_milage + period_of_service WHERE technic_id = ? ");
-        Update.setInt(1,id_technic);
-        Update.executeUpdate();
-        Update.close();
-        Connect.close();
 
-    }
+
 
     public void updateTechnicAfterUsing(Integer id_technic,Double milage) throws SQLException, ClassNotFoundException {
         Connection Connect = getDbConnection();
+
+
         PreparedStatement Update = Connect.prepareStatement("UPDATE technic SET full_engine_hours = full_engine_hours +(?*index_engine_hours) WHERE technic_id = ? ");
+
+
         Update.setDouble(1,milage);
         Update.setInt(2,id_technic);
         Update.executeUpdate();
+
         Update.close();
         Connect.close();
 
@@ -256,9 +310,11 @@ Connect.close();
     public void selectTechnicMonitoring(ObservableList <MonitoringRecieveData> Data) throws SQLException, ClassNotFoundException
     {
         Connection Connect = getDbConnection();
+
+        //первая выборка для тех элементов у которых есть совершенные технические осмотры со списанием или не списанием
         Statement Statement= Connect.createStatement();
         ResultSet SELECT = Statement.executeQuery("\n" +
-                "SELECT t1.technic_id,t1.name_technic,t1.index_engine_hours,t1.full_engine_hours,t1.period_of_service,t1.next_service_milage,t2.filling_date,t2.service_manager,t2.filling_time\n" +
+                "SELECT t1.technic_id,t1.name_technic,t1.index_engine_hours,t1.full_engine_hours,t1.period_of_service,t1.next_service_milage,t1.first_milage,t2.filling_date,t2.service_manager,t2.filling_time\n" +
                 "FROM technic t1,journal_tech_service t2\n" +
                 "WHERE t2.id_technic=t1.technic_id order by t1.technic_id desc, t2.filling_date desc,t2.filling_time desc\n" +
                 "");
@@ -272,54 +328,66 @@ Connect.close();
         Integer id  = SELECT.getInt("technic_id");
             String name = SELECT.getString("name_technic");
                     Double index  = SELECT.getDouble("index_engine_hours");
-                            Integer hours  = SELECT.getInt("full_engine_hours");
+                            Double hours  = SELECT.getDouble("full_engine_hours");
                                     Integer period = SELECT.getInt("period_of_service");
                                             String  date = SELECT.getString("filling_date");
                                                     String time  = SELECT.getString("filling_time");
                                                             String manager  = SELECT.getString("service_manager");
                                                                   Integer nextToMilage = SELECT.getInt("next_service_milage");
 
-        if(!SelectionChecker.contains(id)) { Data.add(new MonitoringRecieveData(id,name,index,hours,period,date,time,manager,nextToMilage)); SelectionChecker.add(id); }
+            Statement query =Connect.createStatement();
+                ResultSet resultSet = query.executeQuery("SELECT milage_correction FROM journal_tech_service \n " +
+                    "WHERE id_technic="+id+" AND reset=true ORDER BY id_tech desc limit 1 ");
+                         Double previousMilage=null;
+                            while(resultSet.next()){previousMilage = resultSet.getDouble("milage_correction");}
 
+                                    if(previousMilage!=null)
+                                    {
+                                        if (!SelectionChecker.contains(id))
+                                        {
+                                            Data.add(new MonitoringRecieveData(id, name, index, hours, period, date, time, manager, nextToMilage, previousMilage));
+                                            SelectionChecker.add(id);
+                                        }
+                                    }
         }
 
         //вторая серия для тех машин у которых нет связей в таблицах
         //
-
-        SELECT = Statement.executeQuery("\n" +
-                "SELECT t1.technic_id,t1.name_technic,t1.index_engine_hours,\n" +
-                "t1.full_engine_hours,t1.period_of_service,t1.next_service_milage\n" +
-                "FROM technic t1\n");
-
-
-        while (SELECT.next())
-        {
+        Statement Statement2= Connect.createStatement();
+                     ResultSet query = Statement2.executeQuery("\n" +
+                            "SELECT t1.technic_id,t1.name_technic,t1.index_engine_hours,\n" +
+                            "t1.full_engine_hours,t1.first_milage,t1.period_of_service,t1.next_service_milage\n" +
+                            "FROM technic t1\n");
 
 
-            Integer id  = SELECT.getInt("technic_id");
-            String name = SELECT.getString("name_technic");
-            Double index  = SELECT.getDouble("index_engine_hours");
-            Integer hours  = SELECT.getInt("full_engine_hours");
-            Integer period = SELECT.getInt("period_of_service");
-            String  date = "Отсутствует";
-            String time  = "Отсутствует";
-            String manager  = "Не проводил";
-            Integer nextToMilage = SELECT.getInt("next_service_milage");
+                        while (query.next())
+                        {
 
 
+                                Integer id  = query.getInt("technic_id");
+                                String name = query.getString("name_technic");
+                                Double index  = query.getDouble("index_engine_hours");
+                                Double hours  = query.getDouble("full_engine_hours");
+                                Integer period = query.getInt("period_of_service");
+                                String  date = "Отсутствует";
+                                String time  = "Отсутствует";
+                                String manager  = "Не проводил";
+                                Integer nextToMilage = query.getInt("next_service_milage");
+                                Double correction=query.getDouble("first_milage");
 
-            if (!SelectionChecker.contains(id))
-            {
-                Data.add(new MonitoringRecieveData(id, name, index, hours, period, date, time, manager, nextToMilage));
-                SelectionChecker.add(id);
-            }
 
-        }
+                            if (!SelectionChecker.contains(id))
+                                {
+                                    Data.add(new MonitoringRecieveData(id, name, index, hours, period, date, time, manager, nextToMilage,correction));
+                                    SelectionChecker.add(id);
+                                }
 
-         SelectionChecker.clear();
-            Connect.close();
-                 Statement.close();
-                      SELECT.close();
+                        }
+
+                             SelectionChecker.clear();
+                                Connect.close();
+                                     Statement.close();
+                                          SELECT.close();
 
     }
 

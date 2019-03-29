@@ -112,6 +112,10 @@ public class MenuJournalUsingController {
     private Button ButtonUpdate;
 
     @FXML
+
+    private sample.MainMenuController Parent=null;
+
+    @FXML
     void initialize() throws SQLException, ClassNotFoundException
     {
         DateUsing.setValue(LocalDate.now());
@@ -131,7 +135,7 @@ public class MenuJournalUsingController {
         FillTableView();
 
 
-//        ButtonUpdate.setOnAction(event -> FillTableView());
+
 
         ButtonSend.setOnAction(event ->
         {
@@ -148,7 +152,8 @@ public class MenuJournalUsingController {
 
 
 
-            try {
+            try
+            {
                 Handler.setJournalUsing(CurrentDate,CurrentTime, getChoiceBoxTechnicID(),UsingTime,TextFieldOrder.getText(),TextAreaNote.getText());
                 Handler.updateTechnicAfterUsing(getChoiceBoxTechnicID(),UsingTime);
                 FillTableView();
@@ -255,7 +260,9 @@ public class MenuJournalUsingController {
             e.printStackTrace();
         }
 
-        TableViewJournalUsing.setItems(DataSelectJusing); }
+        TableViewJournalUsing.setItems(DataSelectJusing);
+        updateTableViewParentController();
+    }
 
 
     public void TableViewJournalUsing(MouseEvent mouseEvent)
@@ -286,8 +293,9 @@ public class MenuJournalUsingController {
 
         else if(option.get()==ButtonType.OK)
         {
-            Delete.deleteJusingRow(selectedRow.getId_note(),Integer.parseInt(selectedRow.getId_technic()),Integer.parseInt(selectedRow.getWork_time()));
+            Delete.deleteJusingRow(selectedRow.getId_note(),Integer.parseInt(selectedRow.getId_technic()),Double.parseDouble(selectedRow.getWork_time()));
             FillTableView();
+
 
         }
         else if(option.get()==ButtonType.CANCEL) { }
@@ -303,4 +311,23 @@ public class MenuJournalUsingController {
         alert.showAndWait();
 
     }
+
+
+    public void setParentController(sample.MainMenuController MainController)
+    {
+        Parent = MainController;
+    }
+
+    protected sample.MainMenuController getParentController ()
+    {
+        return Parent;
+    }
+
+    protected void  updateTableViewParentController ()
+    {
+        if(Parent!=null) {  Parent.fillTableView();}
+    }
+
+
+
 }
