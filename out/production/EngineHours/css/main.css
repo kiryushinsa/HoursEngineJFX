@@ -2,10 +2,16 @@
 
 
 
-.menu-bar
+.menu-bar, .menu-bar .context-menu
 {
-	-fx-background-color:white;
-	-fx:red;
+	-fx-background-color:black;
+	-fx-text-fill:white;
+	
+}
+
+.menu-bar .label
+{
+	-fx-text-fill:white;
 	
 }
 
