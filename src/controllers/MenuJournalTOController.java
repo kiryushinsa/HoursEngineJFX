@@ -3,14 +3,11 @@ package controllers;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,7 +16,7 @@ import javafx.scene.control.*;
 import database.DataBaseHandler;
 import recievers.JournalToReceiveData;
 
-public class MenuJournalTOController {
+public class MenuJournalTOController extends ControllersHandler {
 
     @FXML
     private ResourceBundle resources;
@@ -27,23 +24,12 @@ public class MenuJournalTOController {
     @FXML
     private URL location;
 
-    @FXML
-    private Menu Menu_technica;
 
-    @FXML
-    private Menu Menu_journalTO;
-
-    @FXML
-    private Menu Menu_techUsing;
-
-    @FXML
-    private Slider SliderHours;
 
     @FXML
     private DatePicker DateUsing;
 
-    @FXML
-    private Slider SliderMinutes;
+
 
     @FXML
     private TextArea TextAreaNote;
@@ -111,6 +97,12 @@ public class MenuJournalTOController {
 
 
     @FXML
+    private Spinner<Integer> SpinnerHours;
+
+    @FXML
+    private Spinner<Integer> SpinnerMinutes;
+
+    @FXML
     private MainMenuController Parent=null;
 
     @FXML
@@ -137,9 +129,18 @@ public class MenuJournalTOController {
         tb_note.setCellValueFactory(cell -> cell.getValue().comment_of_tech_serviceProperty());
         tb_reset.setCellValueFactory(cell -> cell.getValue().resetTOProperty());
 
-        FillTableView();
+        fillTableView();
 
 
+
+        spinnerHandler(SpinnerMinutes);
+        spinnerHandler(SpinnerHours);
+
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(00, 59, 0);
+        SpinnerMinutes.setValueFactory(valueFactory);
+
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(00, 23, 0);
+        SpinnerHours.setValueFactory(valueFactory);
 
 
         ButtonSend.setOnAction(event -> {
@@ -151,39 +152,23 @@ public class MenuJournalTOController {
             LocalDate CurrentDateFromPicker = DateUsing.getValue();
             Date CurrentDate =  convertToDateViaSqlDate(CurrentDateFromPicker);
 
-            Number Hours = SliderHours.getValue();
-            Number Minutes = SliderMinutes.getValue();
-            LocalTime CurrentTime = LocalTime.of( Hours.intValue(),Minutes.intValue());
 
-
-//            if(CheckerReset.isSelected() == true)
-//            {
-//                try {
-//                    Handler.updateTechnicAfterTO(getChoiceBoxTechnicID());
-//
-//
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                } catch (ClassNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//            }
 
             try {
 
-                if(TextFieldServiceManager.getText()==null || TextFieldServiceManager.getText().trim().isEmpty())
+                if(TextFieldServiceManager.getText()==null || TextFieldServiceManager.getText().trim().isEmpty() || getTime(SpinnerHours,SpinnerMinutes)==null)
                 {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Error");
                     alert.setHeaderText("Ошибка при добавлении записи в базу данных");
-                    alert.setContentText("Заполните поле 'ФИО проводившего ТО'");
+                    alert.setContentText("Проверьте корректность ввода заполненных полей");
                     alert.showAndWait();}
 
                 else
                     {
-                    Handler.setJournalTo(CurrentDate,CurrentTime, getChoiceBoxTechnicID(),TextFieldServiceManager.getText(),TextFieldTypeTO.getText(),TextAreaNote.getText(),CheckerReset.isSelected());
+                    Handler.setJournalTo(CurrentDate,getTime(SpinnerHours,SpinnerMinutes), getChoiceBoxTechnicID(),TextFieldServiceManager.getText(),TextFieldTypeTO.getText(),TextAreaNote.getText(),CheckerReset.isSelected());
 
-                            FillTableView();
+                            fillTableView();
                                 messageSaveSuccesful();
 
                     }
@@ -202,30 +187,6 @@ public class MenuJournalTOController {
             }
 
         }  );
-
-
-//конкатенация слайдеров в лейбл
-        SliderHours.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                newValue = newValue.intValue();
-                LabelHours.setText(newValue + ":");
-
-            }
-        });
-
-        SliderMinutes.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValueMinutes, Number newValueMinutes) {
-                newValueMinutes = newValueMinutes.intValue();
-
-                if(newValueMinutes.intValue()<10) {
-                    LabelMinutes.setText("0" + newValueMinutes + "");
-                }
-                else {LabelMinutes.setText(newValueMinutes + "");}
-            }
-        });
-
 
 
 
@@ -250,17 +211,19 @@ public class MenuJournalTOController {
         ChoiseBoxTechnics.getSelectionModel().select(0);
     }
 
-    private void FillTableView()
+    private void fillTableView()
     {
 
         TableViewJournalTO.getItems().clear();
+
         DataBaseHandler Query = new DataBaseHandler();
 
         try {
             Query.getAllRowsJTO(DataSelectJTo);
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e)
+        {
             e.printStackTrace();
         }
 
@@ -289,7 +252,7 @@ updateTableViewParentController();
             if(selectedRow.getResetTO()=="Cброшено")  Delete.deleteJToRow(selectedRow.getId_tech(),true,selectedRow.getId_tech());
             else {Delete.deleteJToRow(selectedRow.getId_tech(),false,selectedRow.getId_tech());}
 
-            FillTableView();
+            fillTableView();
         } else if (option.get() == ButtonType.CANCEL) {       }
     }
 

@@ -5,7 +5,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import controllers.UserSettingsController;
 import javafx.collections.ObservableList;
+import org.postgresql.util.PSQLException;
 import recievers.JournalToReceiveData;
 import recievers.JournalUsingRecieveData;
 import recievers.MonitoringRecieveData;
@@ -17,18 +19,20 @@ public class DataBaseHandler extends  Configs
 
 
 
-    public Connection getDbConnection() throws ClassNotFoundException,SQLException
+    public Connection getDbConnection() throws ClassNotFoundException,SQLException, org.postgresql.util.PSQLException
     {
-        String url = "jdbc:postgresql://"+dbHost +":" + dbport+"/" +dbName;
+
+        String url = "jdbc:postgresql://"+getIp() +":" + getPort()+"/" + getDatabase();
         Class.forName("org.postgresql.Driver");
 
         try {
 
 
-            Connection dbconnect = DriverManager.getConnection(url, dbUser, dbPassword);
+            Connection dbconnect = DriverManager.getConnection(url, getUser(), getPassword());
             return dbconnect;
         }
         catch (SQLException e){ e.printStackTrace(); return null;}
+
 
 
 

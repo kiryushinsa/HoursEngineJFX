@@ -81,7 +81,7 @@ public class  MainMenuController {
     @FXML
     private Menu Journal;
 
-@FXML
+    @FXML
     public MainMenuController getController(){
         return this;
     }
@@ -200,6 +200,8 @@ public class  MainMenuController {
 
 
 
+
+
         tb_id.setCellValueFactory(cell->cell.getValue().technic_idProperty());
         tb_name.setCellValueFactory(cell -> cell.getValue().name_technicProperty());
         tb_date.setCellValueFactory(cell->cell.getValue().filling_dateProperty());
@@ -232,7 +234,10 @@ public class  MainMenuController {
          } catch (ClassNotFoundException e) {
              e.printStackTrace();
          }
-         catch ( NullPointerException e){}
+         catch ( NullPointerException e)
+         {
+            messageDataBaseConnectWarningMessage();
+         }
          TableMonitoring.setItems(DataSelectMonitoring);
 
 
@@ -284,4 +289,15 @@ public class  MainMenuController {
 
 
      }
+
+
+    private void messageDataBaseConnectWarningMessage()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Ошибка подключения к базе данных");
+        alert.setHeaderText("Поменяйте данные в пункте меню" +"'Настройки'");
+        alert.setContentText("");
+        alert.showAndWait();
+
+    }
 }

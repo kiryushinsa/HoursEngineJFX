@@ -18,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 import database.DataBaseHandler;
 import recievers.TechnicReceiveData;
 
-public class MenuTechnicController {
+public class  MenuTechnicController {
 
 
     @FXML

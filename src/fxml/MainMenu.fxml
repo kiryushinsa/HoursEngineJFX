@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor" prefHeight="614.0" prefWidth="1005.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainMenuController">
+<AnchorPane fx:id="anchor" prefHeight="614.0" prefWidth="1005.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainMenuController">
    <children>
       <Label layoutX="7.0" layoutY="37.0" prefHeight="47.0" prefWidth="481.0" styleClass="label-topics" text="Состояние технических средств" textFill="WHITE">
          <font>
@@ -39,7 +39,7 @@
           <TableColumn fx:id="tb_name" prefWidth="131.0" text="Наименование" />
             <TableColumn fx:id="tb_date" prefWidth="134.0" text="Дата крайнего ТО" />
             <TableColumn fx:id="tb_fio" minWidth="5.0" prefWidth="97.0" text="ТО провел" />
-            <TableColumn fx:id="tb_index" editable="false" prefWidth="124.0" text="Коеф.моточасов" />
+            <TableColumn fx:id="tb_index" editable="false" prefWidth="124.0" text="Коэф.моточасов" />
             <TableColumn fx:id="tb_fullEngine" prefWidth="121.0" text="Всего моточасов" />
             <TableColumn fx:id="tb_period_service" minWidth="20.0" prefWidth="177.0" text="Межсервисный интервал" />
             <TableColumn fx:id="tb_percent" prefWidth="140.0" text="\% до начала ТО" />

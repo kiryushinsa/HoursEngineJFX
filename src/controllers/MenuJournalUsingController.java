@@ -2,8 +2,10 @@ package controllers;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -19,10 +21,11 @@ import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import database.DataBaseHandler;
+import javafx.util.StringConverter;
 import recievers.JournalUsingRecieveData;
 import recievers.TechnicReceiveData;
 
-public class MenuJournalUsingController {
+public class MenuJournalUsingController extends ControllersHandler {
 
     @FXML
     private ResourceBundle resources;
@@ -63,14 +66,10 @@ public class MenuJournalUsingController {
     @FXML
     private TableColumn<JournalUsingRecieveData, String> tb_note;
 
-    @FXML
-    private Slider SliderHours;
 
     @FXML
     private DatePicker DateUsing;
 
-    @FXML
-    private Slider SliderMinutes;
 
     @FXML
     private TextArea TextAreaNote;
@@ -84,16 +83,10 @@ public class MenuJournalUsingController {
     @FXML
     private Button ButtonSend;
 
-    @FXML
-    private Label LabelHours;
 
-    @FXML
-    private Label LabelMinutes;
 
     private ObservableList<String> DataSelectTechnic = FXCollections.observableArrayList();
 
-    @FXML
-    private TextField TextFieldUsingTime;
 
 
     @FXML
@@ -112,22 +105,30 @@ public class MenuJournalUsingController {
 
 
     @FXML
-    private Button ButtonUpdate;
+    private MainMenuController Parent=null;
 
     @FXML
+    private Spinner<Integer> SpinnerHours;
 
-    private MainMenuController Parent=null;
+    @FXML
+    private Spinner<Integer> SpinnerMinutes;
+
+
+    @FXML
+    private Spinner<Double> SpinnerUsingHours;
+
+    @FXML
+    private Spinner<Double> SpinnerUsingMinutes;
 
     @FXML
     void initialize() throws SQLException, ClassNotFoundException
     {
         DateUsing.setValue(LocalDate.now());
-            FillChoiceBox();
-                TextFieldUsingTime.setText("5");
+            fillChoiceBox();
 
 
 
-
+// назначение параметров для столбцов таблицы
         tb_id.setCellValueFactory(cell->cell.getValue().id_noteProperty());
         tb_date.setCellValueFactory(cell -> cell.getValue().filling_dateProperty());
         tb_time.setCellValueFactory(cell->cell.getValue().filling_timeProperty());
@@ -135,58 +136,86 @@ public class MenuJournalUsingController {
         tb_using_time.setCellValueFactory(cell -> cell.getValue().work_timeProperty());
         tb_order.setCellValueFactory(cell->cell.getValue().order_on_taskProperty());
         tb_note.setCellValueFactory(cell -> cell.getValue().comment_of_usingProperty());
-        FillTableView();
+        fillTableView();
 
+
+        spinnerHandler(SpinnerUsingMinutes);
+        spinnerHandler(SpinnerMinutes);
+        spinnerHandler(SpinnerHours);
+        spinnerHandler(SpinnerUsingHours);
+
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(00, 59, 0);
+        SpinnerMinutes.setValueFactory(valueFactory);
+
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(00, 23, 0);
+        SpinnerHours.setValueFactory(valueFactory);
+
+        SpinnerValueFactory<Double> valueFactory2 = new SpinnerValueFactory.DoubleSpinnerValueFactory(00, 23, 0);
+        SpinnerUsingHours.setValueFactory(valueFactory2);
+
+        valueFactory2 = new SpinnerValueFactory.DoubleSpinnerValueFactory(00, 59, 0);
+        SpinnerUsingMinutes.setValueFactory(valueFactory2);
+
+
+//      конец обработчика спинеров
 
 
 
         ButtonSend.setOnAction(event ->
         {
+
+
+
+
+
             DataBaseHandler Handler = new DataBaseHandler();
 
             LocalDate CurrentDateFromPicker = DateUsing.getValue();
             Date CurrentDate =  convertToDateViaSqlDate(CurrentDateFromPicker);
 
-            Number Hours = SliderHours.getValue();
-            Number Minutes = SliderMinutes.getValue();
-            LocalTime CurrentTime = LocalTime.of( Hours.intValue(),Minutes.intValue());
 
-            Double UsingTime =Double.parseDouble(TextFieldUsingTime.getText())/60  ;
-
-
-
-            try
+            if (getTime(SpinnerHours,SpinnerMinutes)!=null && getUsingTime(SpinnerUsingHours,SpinnerUsingMinutes)!=null)
             {
-                Handler.setJournalUsing(CurrentDate,CurrentTime, getChoiceBoxTechnicID(),UsingTime,TextFieldOrder.getText(),TextAreaNote.getText());
-                Handler.updateTechnicAfterUsing(getChoiceBoxTechnicID(),UsingTime);
-                FillTableView();
-
-                messageSaveSuccesful();
 
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (NumberFormatException e)
-            {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Error");
-                alert.setHeaderText("Ошибка при добавлении записи в базу данных");
-                alert.setContentText("Заполните поле 'Время использования'");
-                alert.showAndWait();
+
+
+                try
+                {
+                    Handler.setJournalUsing(CurrentDate,getTime(SpinnerHours,SpinnerMinutes), getChoiceBoxTechnicID(),getUsingTime(SpinnerUsingHours,SpinnerUsingMinutes),TextFieldOrder.getText(),TextAreaNote.getText());
+                    Handler.updateTechnicAfterUsing(getChoiceBoxTechnicID(),getUsingTime(SpinnerUsingHours,SpinnerUsingMinutes));
+                    fillTableView();
+
+                    messageSaveSuccesful();
+
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (NumberFormatException e)
+                {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Ошибка при добавлении записи в базу данных");
+                    alert.setContentText("Заполните поле 'Время использования'");
+                    alert.showAndWait();
+                }
+
+
             }
+            else {    Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Ошибка");
+                alert.setHeaderText("Ошибка при добавлении записи в базу данных");
+                alert.setContentText("Проверьте заполненность полей Время использования и Длительность использования");
+                alert.showAndWait();     }
+
+
+
+
         });
 
-//обработчик ввода
-
-        Pattern pattern3Integer = Pattern.compile("\\d{0,3}");
-        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
-            return pattern3Integer.matcher(change.getControlNewText()).matches() ? change : null;
-        });
-        TextFieldUsingTime.setTextFormatter(formatter);
-
-
+//обработчик ввода для текстовых полей
         Pattern pattern120words = Pattern.compile(".{0,119}");
         TextFormatter formatter2 = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
             return pattern120words.matcher(change.getControlNewText()).matches() ? change : null;
@@ -199,37 +228,13 @@ public class MenuJournalUsingController {
             return pattern8words.matcher(change.getControlNewText()).matches() ? change : null;
         });
         TextFieldOrder.setTextFormatter(formatter3);
-
-
-//конкатенация слайдеров в лейбл
-        SliderHours.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                  newValue = newValue.intValue();
-                    LabelHours.setText(newValue + ":");
-
-            }
-        });
-
-        SliderMinutes.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValueMinutes, Number newValueMinutes) {
-                newValueMinutes = newValueMinutes.intValue();
-
-                if(newValueMinutes.intValue()<10) {
-                                        LabelMinutes.setText("0" + newValueMinutes + "");
-                }
-                else {LabelMinutes.setText(newValueMinutes + "");}
-            }
-        });
-
 //конец intialize
 
 
     }
 
 
-    private void FillChoiceBox() throws SQLException, ClassNotFoundException {
+    private void fillChoiceBox() throws SQLException, ClassNotFoundException {
         DataBaseHandler Query = new DataBaseHandler();
         Query.getTechnicRowForChoiseList(DataSelectTechnic,  Map);
         ChoiseBoxTechnics.setItems(DataSelectTechnic);
@@ -250,7 +255,7 @@ public class MenuJournalUsingController {
  }
 
 
-    private void FillTableView()
+    private void fillTableView()
     {
         TableViewJournalUsing.getItems().clear();
         DataBaseHandler Query = new DataBaseHandler();
@@ -297,7 +302,7 @@ public class MenuJournalUsingController {
         else if(option.get()==ButtonType.OK)
         {
             Delete.deleteJusingRow(selectedRow.getId_note(),Integer.parseInt(selectedRow.getId_technic()),Double.parseDouble(selectedRow.getWork_time()));
-            FillTableView();
+            fillTableView();
 
 
         }
