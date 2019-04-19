@@ -1,5 +1,8 @@
 package database;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -21,7 +24,6 @@ public class DataBaseHandler extends  Configs
 
     public Connection getDbConnection() throws ClassNotFoundException,SQLException, org.postgresql.util.PSQLException
     {
-
         String url = "jdbc:postgresql://"+getIp() +":" + getPort()+"/" + getDatabase();
         Class.forName("org.postgresql.Driver");
 
@@ -32,6 +34,28 @@ public class DataBaseHandler extends  Configs
             return dbconnect;
         }
         catch (SQLException e){ e.printStackTrace(); return null;}
+
+
+
+
+    }
+
+    public void addImageTest(int id, File file) throws FileNotFoundException
+    {
+        FileInputStream image= new FileInputStream(file);
+
+        try {
+
+            Connection connection = getDbConnection();
+                    PreparedStatement statement = connection.prepareStatement("UPDATE " + TECHNIC_TABLE + " SET image=? WHERE technic_id=?");
+                       statement.setBinaryStream(1,image);
+                            statement.setInt(2,id);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
 

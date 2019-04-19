@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -13,16 +14,27 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import database.DataBaseHandler;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import recievers.TechnicReceiveData;
+
+import javax.swing.*;
 
 public class  MenuTechnicController {
 
 
     @FXML
     private ResourceBundle resources;
+
+
+    @FXML
+    private AnchorPane AnchorInput;
 
     @FXML
     private URL location;
@@ -77,10 +89,36 @@ public class  MenuTechnicController {
     private MenuItem ContextItemDelete;
 
     @FXML
+    private Button Test;
+
+    @FXML
     private MainMenuController Parent=null;
 
     @FXML
     void initialize() {
+
+       Test.setOnAction(event -> {
+
+           FileChooser fileChooser = new FileChooser();
+           fileChooser.setTitle("Выберите изображение");
+               fileChooser.getExtensionFilters().addAll
+                       (
+                         new FileChooser.ExtensionFilter("JPG(*.jpg)", "*.jpg"),
+                             new FileChooser.ExtensionFilter("PNG(*.png)", "*.png")
+                                                        );
+            File file = fileChooser.showOpenDialog(AnchorInput.getScene().getWindow());
+
+               if(file!=null)
+               {
+                   System.out.println(file.getName());
+                   System.out.println(file.getAbsolutePath());
+               }
+
+
+
+       }       );
+
+
       ButtonSend.setOnAction(event -> {
                   DataBaseHandler Handler = new DataBaseHandler();
 

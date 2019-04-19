@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="815.0" prefWidth="818.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuJournalUsingController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="815.0" prefWidth="1003.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuJournalUsingController">
    <children>
       <Label layoutX="15.0" layoutY="30.0" styleClass="label-topics" stylesheets="@../css/main.css" text="Журнал использования технических средств" textFill="WHITE">
          <font>
@@ -24,13 +24,13 @@
       </Label>
       <TableView fx:id="TableViewJournalUsing" layoutX="6.0" layoutY="549.0" prefHeight="260.0" prefWidth="798.0" stylesheets="@../css/main.css" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="549.0">
         <columns>
-          <TableColumn fx:id="tb_id" prefWidth="65.0" text="ID записи" />
-          <TableColumn fx:id="tb_date" prefWidth="118.0" text="Дата заполнения " />
-            <TableColumn fx:id="tb_time" prefWidth="117.0" text="Время заполнения" />
-            <TableColumn fx:id="tb_idtech" minWidth="0.0" prefWidth="89.0" text="ID техники " />
-            <TableColumn fx:id="tb_using_time" prefWidth="121.60000610351562" text="Время использования " />
-            <TableColumn fx:id="tb_order" prefWidth="120.00006103515625" text="Наряд-задание" />
-            <TableColumn fx:id="tb_note" prefWidth="165.5999755859375" text="Примечание " />
+          <TableColumn fx:id="tb_id" prefWidth="65.0" text="ID" />
+          <TableColumn fx:id="tb_date" prefWidth="132.0" text="Дата заполнения " />
+            <TableColumn fx:id="tb_time" prefWidth="134.0" text="Время заполнения" />
+            <TableColumn fx:id="tb_idtech" minWidth="0.0" prefWidth="118.0" text="ID техники " />
+            <TableColumn fx:id="tb_using_time" prefWidth="172.0" text="Время использования " />
+            <TableColumn fx:id="tb_order" prefWidth="133.0" text="Наряд-задание" />
+            <TableColumn fx:id="tb_note" prefWidth="228.0" text="Примечание " />
         </columns>
          <contextMenu>
             <ContextMenu fx:id="ContextMenuTable">

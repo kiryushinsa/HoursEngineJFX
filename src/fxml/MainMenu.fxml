@@ -21,7 +21,7 @@
          <menus>
             <Menu fx:id="Journal" mnemonicParsing="false" text="Журналы">
               <items>
-                <MenuItem fx:id="Menu_technica" mnemonicParsing="false" onAction="#click" text="Список техники" />
+                <MenuItem fx:id="Menu_technica" mnemonicParsing="false"  text="Список техники" />
                 <MenuItem fx:id="Menu_journalTO" mnemonicParsing="false" text="Журнал технического осмотра" />
                   <MenuItem fx:id="Menu_techUsing" mnemonicParsing="false" text="Журнал использования" />
               </items>

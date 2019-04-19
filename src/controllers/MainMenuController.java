@@ -89,11 +89,6 @@ public class  MainMenuController {
 
 
     @FXML
-    void click(ActionEvent event) {
-        System.out.println("klыыыыыk");
-    }
-
-    @FXML
     void initialize()
     {
 
@@ -110,7 +105,7 @@ public class  MainMenuController {
 
                     Parent root = null;
                     try {
-                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("../fxml/MenuJournalTO.fxml"));
+                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuJournalTO.fxml"));
                         root = loader.load();
                         MenuJournalTOController example = (MenuJournalTOController) (loader.getController());
                         example.setParentController(getController());
@@ -134,7 +129,7 @@ public class  MainMenuController {
                         Parent root = null;
                         try {
 
-                            FXMLLoader loader = new FXMLLoader(Main.class.getResource("../fxml/MenuTechnic.fxml"));
+                            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuTechnic.fxml"));
                             root = loader.load();
                             MenuTechnicController example =(MenuTechnicController) loader.getController();
                             example.setParentController(getController());
@@ -158,7 +153,7 @@ public class  MainMenuController {
                 Menu_techUsing.setOnAction(event -> {
                     Parent root = null;
                     try {
-                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("../fxml/MenuJournalUsing.fxml"));
+                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuJournalUsing.fxml"));
                         root = loader.load();
                         MenuJournalUsingController example =(MenuJournalUsingController) loader.getController();
                         example.setParentController(getController());
@@ -180,7 +175,7 @@ public class  MainMenuController {
                 Menu_Settings.setOnAction(event -> {
                     Parent root = null;
                     try {
-                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("../fxml/MenuSettings.fxml"));
+                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuSettings.fxml"));
                         root = loader.load();
 
 
@@ -252,7 +247,10 @@ public class  MainMenuController {
                  protected void updateItem(String item, boolean empty)
                  {
 
+/*                 перекрашивает строку в цвет относительно показателя столбца "процент заполненности"
+                    в таблице на главной форме
 
+*/
                      super.updateItem(item, empty);
 
                      setText(empty ? "" : getItem().toString());

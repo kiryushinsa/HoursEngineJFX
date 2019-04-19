@@ -25,7 +25,7 @@ public class UserSettingsController
     public void readFile()
     {
         try{
-            FileInputStream fstream = new FileInputStream("src/database/configs.txt");
+            FileInputStream fstream = new FileInputStream("configs.txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
             String strLine;
             int checker = 0;
@@ -49,7 +49,7 @@ public class UserSettingsController
 
 
     public void setSettings(String ip,String port,String user,String password,String database) throws SQLException, ClassNotFoundException {
-        File myFile =  new File("src/database/configs.txt");
+        File myFile =  new File("configs.txt");
 
         try{
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(myFile,false)));

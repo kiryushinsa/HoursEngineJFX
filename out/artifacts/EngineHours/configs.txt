@@ -1,0 +1,5 @@
+192.168.95.98
+5432
+admin
+vsks
+enginehours
