@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
@@ -89,15 +91,22 @@ public class  MenuTechnicController {
     private MenuItem ContextItemDelete;
 
     @FXML
-    private Button Test;
+    private ImageView ImageViewItem;
+
+    @FXML
+    private Button ButtonChooseImage;
+
 
     @FXML
     private MainMenuController Parent=null;
 
     @FXML
+    private Button ButtonGetImage;
+
+    @FXML
     void initialize() {
 
-       Test.setOnAction(event -> {
+        ButtonChooseImage.setOnAction(event -> {
 
            FileChooser fileChooser = new FileChooser();
            fileChooser.setTitle("Выберите изображение");
@@ -110,6 +119,19 @@ public class  MenuTechnicController {
 
                if(file!=null)
                {
+                   DataBaseHandler dataBaseHandler = new DataBaseHandler();
+
+                   try {
+                       dataBaseHandler.addImage(91,file);
+                   } catch (SQLException e) {
+                       e.printStackTrace();
+                   } catch (ClassNotFoundException e) {
+                       e.printStackTrace();
+                   } catch (FileNotFoundException e) {
+                       e.printStackTrace();
+                   }
+
+
                    System.out.println(file.getName());
                    System.out.println(file.getAbsolutePath());
                }
@@ -118,6 +140,12 @@ public class  MenuTechnicController {
 
        }       );
 
+        ButtonGetImage.setOnAction(event -> {
+//            Image image;
+//            File file;
+//            ImageViewItem.setImage();
+
+        });
 
       ButtonSend.setOnAction(event -> {
                   DataBaseHandler Handler = new DataBaseHandler();

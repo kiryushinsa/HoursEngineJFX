@@ -11,14 +11,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="823.0" prefWidth="958.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuTechnicController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="823.0" prefWidth="958.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuTechnicController">
    <children>
-      <AnchorPane fx:id="AnchorInput" layoutX="15.0" layoutY="67.0" prefHeight="326.0" prefWidth="929.0" styleClass="anchorInput" stylesheets="@../css/main.css" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="14.0">
+      <AnchorPane fx:id="AnchorInput" layoutX="15.0" layoutY="73.0" prefHeight="320.0" prefWidth="929.0" styleClass="anchorInput" stylesheets="@../css/main.css" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="14.0">
          <children>
-            <TextField fx:id="FieldNameTechnic" layoutX="11.0" layoutY="38.0" prefHeight="25.0" prefWidth="499.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="164.79999999999995" />
-            <TextField fx:id="FieldFirstMilage" layoutX="11.0" layoutY="91.0" prefHeight="25.0" prefWidth="316.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="348.0" />
-            <TextField fx:id="FieldPeriodOfService" layoutX="11.0" layoutY="148.0" prefHeight="25.0" prefWidth="316.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="348.0" />
-            <TextField fx:id="FieldIndexEngineHours" layoutX="11.0" layoutY="196.0" prefHeight="25.0" prefWidth="316.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="348.0" />
+            <TextField fx:id="FieldNameTechnic" layoutX="11.0" layoutY="38.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
+            <TextField fx:id="FieldFirstMilage" layoutX="11.0" layoutY="91.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
+            <TextField fx:id="FieldPeriodOfService" layoutX="11.0" layoutY="148.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
+            <TextField fx:id="FieldIndexEngineHours" layoutX="11.0" layoutY="196.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
             <Label layoutX="11.0" layoutY="67.0" styleClass="label-field" text="Начальный пробег " AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
             <Button fx:id="ButtonSend" layoutX="774.0" layoutY="14.0" mnemonicParsing="false" prefHeight="220.0" prefWidth="122.0" text="Записать " AnchorPane.rightAnchor="12.0">
                <font>
@@ -27,8 +27,8 @@
             <Label layoutX="11.0" layoutY="177.0" styleClass="label-field" text="Коэффициент моточасов(формат &quot;3.5&quot;)" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
             <Label layoutX="11.0" layoutY="123.0" styleClass="label-field" text="Период обслуживания" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
             <Label layoutX="11.0" layoutY="14.0" styleClass="label-field" text="Название техники" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
-            <ImageView fitHeight="246.0" fitWidth="188.0" layoutX="595.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" />
-            <Button fx:id="Test" layoutX="177.0" layoutY="253.0" mnemonicParsing="false" text="Button" />
+            <ImageView fx:id="ImageViewItem" fitHeight="220.0" fitWidth="298.0" layoutX="474.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="473.6" AnchorPane.rightAnchor="157.0" />
+            <Button fx:id="ButtonChooseImage" layoutX="489.0" layoutY="251.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="258.0" text="Выбрать изображение " AnchorPane.leftAnchor="489.0" AnchorPane.rightAnchor="181.60000000000002" />
          </children>
       </AnchorPane>
       <Label layoutX="14.0" layoutY="14.0" styleClass="label-topics" text="Список техники" textFill="WHITE">

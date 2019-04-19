@@ -40,27 +40,6 @@ public class DataBaseHandler extends  Configs
 
     }
 
-    public void addImageTest(int id, File file) throws FileNotFoundException
-    {
-        FileInputStream image= new FileInputStream(file);
-
-        try {
-
-            Connection connection = getDbConnection();
-                    PreparedStatement statement = connection.prepareStatement("UPDATE " + TECHNIC_TABLE + " SET image=? WHERE technic_id=?");
-                       statement.setBinaryStream(1,image);
-                            statement.setInt(2,id);
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-    }
 
 
     public void setTechnic(String name_technic, Integer first_milage, Integer period_of_service, double index_engine_hours) throws SQLException, ClassNotFoundException
@@ -420,5 +399,23 @@ Connect.close();
 
     }
 
+    public void addImage(int id, File file) throws SQLException, ClassNotFoundException, FileNotFoundException {
+
+        FileInputStream fis = new FileInputStream(file);
+        Connection connection= getDbConnection();
+        PreparedStatement statement = connection.prepareStatement(" UPDATE technic SET image=? WHERE technic_id=?");
+        statement.setBinaryStream(1,fis,(int)file.length());
+        statement.setInt(2,id);
+
+         statement.execute();
+         connection.close();
+         statement.close();
+
+
+
+    }
+    public File getImage(int id){
+        return null;
+    }
 
 }
