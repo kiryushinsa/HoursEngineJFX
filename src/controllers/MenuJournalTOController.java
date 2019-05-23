@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -14,6 +15,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import database.DataBaseHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import recievers.JournalToReceiveData;
 
 public class MenuJournalTOController extends ControllersHandler {
@@ -24,12 +27,8 @@ public class MenuJournalTOController extends ControllersHandler {
     @FXML
     private URL location;
 
-
-
     @FXML
     private DatePicker DateUsing;
-
-
 
     @FXML
     private TextArea TextAreaNote;
@@ -106,16 +105,23 @@ public class MenuJournalTOController extends ControllersHandler {
     private MainMenuController Parent=null;
 
     @FXML
+    private ImageView ImageViewItem;
+
+    @FXML
     void initialize()
     {
         try {
-            FillChoiceBox();
+            fillChoiceBox();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
+        fillImageView();//first fill image view
+
+        ChoiseBoxTechnics.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            fillImageView();});
 
         DateUsing.setValue(LocalDate.now());
 
@@ -203,7 +209,7 @@ public class MenuJournalTOController extends ControllersHandler {
         return Map.get(ChoiseBoxTechnics.getValue());
     }
 
-    private void FillChoiceBox() throws SQLException, ClassNotFoundException
+    private void fillChoiceBox() throws SQLException, ClassNotFoundException
     {
         DataBaseHandler Query = new DataBaseHandler();
         Query.getTechnicRowForChoiseList(DataSelectTechnic,  Map);
@@ -281,6 +287,23 @@ updateTableViewParentController();
         alert.setHeaderText("Запись добавлена успешно");
         alert.setContentText("");
         alert.showAndWait();
+    }
 
+    private void fillImageView()
+    {
+        DataBaseHandler image = new DataBaseHandler();
+        try {
+            ImageViewItem.setImage(image.getImage(Map.get(ChoiseBoxTechnics.getValue())));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+        }
+        catch (NullPointerException e)
+        {
+            Class<?> clazz = this.getClass();
+            InputStream input = clazz.getResourceAsStream("/image/question.png");
+            Image question = new Image(input);
+            ImageViewItem.setImage(question);
+        }
     }
 }

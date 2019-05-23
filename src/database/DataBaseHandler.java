@@ -1,20 +1,21 @@
 package database;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.sql.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import controllers.UserSettingsController;
 import javafx.collections.ObservableList;
-import org.postgresql.util.PSQLException;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 import recievers.JournalToReceiveData;
 import recievers.JournalUsingRecieveData;
 import recievers.MonitoringRecieveData;
 import recievers.TechnicReceiveData;
+
+import javax.imageio.ImageIO;
 
 public class DataBaseHandler extends  Configs
 {
@@ -42,20 +43,21 @@ public class DataBaseHandler extends  Configs
 
 
 
-    public void setTechnic(String name_technic, Integer first_milage, Integer period_of_service, double index_engine_hours) throws SQLException, ClassNotFoundException
-    {
+    public void setTechnic(String name_technic, Integer first_milage, Integer period_of_service, double index_engine_hours,File file) throws SQLException, ClassNotFoundException, FileNotFoundException {
         Connection Connect = getDbConnection();
+        FileInputStream fis = new FileInputStream(file);
 
-        PreparedStatement Insert = Connect.prepareStatement("INSERT INTO "+ TECHNIC_TABLE + " "+ TechnicColumns + "VALUES(?,?,?,?,?,?)");
+        PreparedStatement Insert = Connect.prepareStatement("INSERT INTO "+ TECHNIC_TABLE + " "+ TechnicColumn + "VALUES(?,?,?,?,?,?,?)");
         Insert.setString(1, name_technic);
         Insert.setInt(2,first_milage);
         Insert.setInt(3,period_of_service);
         Insert.setDouble(4, index_engine_hours);
         Insert.setDouble(5, first_milage);
         Insert.setDouble(6, first_milage+period_of_service);
-
+        Insert.setBinaryStream(7,fis,(int)file.length());
         Insert.executeUpdate();
         Insert.close();
+
 
 
 
@@ -315,6 +317,37 @@ Connect.close();
     }
 
 
+
+
+    public Image getImage(int id) throws SQLException, ClassNotFoundException {
+        Connection connection = getDbConnection();
+
+
+        Statement statement = connection.createStatement();
+        ResultSet select = statement.executeQuery("SELECT image FROM technic WHERE technic_id =" +id );
+
+        byte [] imgBytes;
+        BufferedImage image=null;
+        while (select.next())
+        {
+            imgBytes = select.getBytes("image");
+            try {
+                 image = ImageIO.read(new ByteArrayInputStream(imgBytes));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            Image img = SwingFXUtils.toFXImage(image,null);
+
+            return img;
+        }
+
+
+        return null;
+
+    }
+
     public void selectTechnicMonitoring(ObservableList <MonitoringRecieveData> Data) throws SQLException, ClassNotFoundException,NullPointerException
     {
         Connection Connect = getDbConnection();
@@ -399,7 +432,7 @@ Connect.close();
 
     }
 
-    public void addImage(int id, File file) throws SQLException, ClassNotFoundException, FileNotFoundException {
+    public void setImage(int id, File file) throws SQLException, ClassNotFoundException, FileNotFoundException {
 
         FileInputStream fis = new FileInputStream(file);
         Connection connection= getDbConnection();
@@ -413,9 +446,6 @@ Connect.close();
 
 
 
-    }
-    public File getImage(int id){
-        return null;
     }
 
 }

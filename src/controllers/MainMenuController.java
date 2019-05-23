@@ -92,91 +92,42 @@ public class  MainMenuController {
     void initialize()
     {
 
-
-
         ButtonUpdate.setOnAction(event -> { fillTableView();});
 
 
+            Menu_journalTO.setOnAction(event ->
+            {
 
-       
+                Parent root = null;
+                try {
+                    FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuJournalTO.fxml"));
+                    root = loader.load();
+                    MenuJournalTOController example = (MenuJournalTOController) (loader.getController());
+                    example.setParentController(getController());
+                }
 
-                Menu_journalTO.setOnAction(event ->
-                {
+                catch (IOException e) { e.printStackTrace(); }
+
+                Stage stageFrame = new Stage();
+                stageFrame.setScene(new Scene(root));
+                stageFrame.getIcons().add(new Image("/image/icon.png"));
+                stageFrame.initModality(Modality.APPLICATION_MODAL);
+                stageFrame.show();
+
+            });
+
+
+            Menu_technica.setOnAction(event ->
+            {
+
 
                     Parent root = null;
                     try {
-                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuJournalTO.fxml"));
+
+                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuTechnic.fxml"));
                         root = loader.load();
-                        MenuJournalTOController example = (MenuJournalTOController) (loader.getController());
+                        MenuTechnicController example =(MenuTechnicController) loader.getController();
                         example.setParentController(getController());
-                    }
-
-                    catch (IOException e) { e.printStackTrace(); }
-
-                    Stage stageFrame = new Stage();
-                    stageFrame.setScene(new Scene(root));
-                    stageFrame.getIcons().add(new Image("/image/icon.png"));
-                    stageFrame.initModality(Modality.APPLICATION_MODAL);
-                    stageFrame.show();
-
-                });
-
-
-                Menu_technica.setOnAction(event ->
-                {
-
-
-                        Parent root = null;
-                        try {
-
-                            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuTechnic.fxml"));
-                            root = loader.load();
-                            MenuTechnicController example =(MenuTechnicController) loader.getController();
-                            example.setParentController(getController());
-
-
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stageFrame = new Stage();
-                        stageFrame.setScene(new Scene(root));
-                    stageFrame.getIcons().add(new Image("/image/icon.png"));
-                        stageFrame.initModality(Modality.APPLICATION_MODAL);
-                        stageFrame.show();
-
-
-
-                });
-
-
-                Menu_techUsing.setOnAction(event -> {
-                    Parent root = null;
-                    try {
-                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuJournalUsing.fxml"));
-                        root = loader.load();
-                        MenuJournalUsingController example =(MenuJournalUsingController) loader.getController();
-                        example.setParentController(getController());
-
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Stage stageFrame = new Stage();
-                    stageFrame.setScene(new Scene(root));
-                    stageFrame.getIcons().add(new Image("/image/icon.png"));
-                    stageFrame.initModality(Modality.APPLICATION_MODAL);
-                    stageFrame.show();
-
-
-
-                });
-
-                Menu_Settings.setOnAction(event -> {
-                    Parent root = null;
-                    try {
-                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuSettings.fxml"));
-                        root = loader.load();
 
 
 
@@ -185,13 +136,57 @@ public class  MainMenuController {
                     }
                     Stage stageFrame = new Stage();
                     stageFrame.setScene(new Scene(root));
-                    stageFrame.getIcons().add(new Image("/image/icon.png"));
+                stageFrame.getIcons().add(new Image("/image/icon.png"));
                     stageFrame.initModality(Modality.APPLICATION_MODAL);
                     stageFrame.show();
 
 
 
-                });
+            });
+
+
+            Menu_techUsing.setOnAction(event -> {
+                Parent root = null;
+                try {
+                    FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuJournalUsing.fxml"));
+                    root = loader.load();
+                    MenuJournalUsingController example =(MenuJournalUsingController) loader.getController();
+                    example.setParentController(getController());
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Stage stageFrame = new Stage();
+                stageFrame.setScene(new Scene(root));
+                stageFrame.getIcons().add(new Image("/image/icon.png"));
+                stageFrame.initModality(Modality.APPLICATION_MODAL);
+                stageFrame.show();
+
+
+
+            });
+
+            Menu_Settings.setOnAction(event -> {
+                Parent root = null;
+                try {
+                    FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/MenuSettings.fxml"));
+                    root = loader.load();
+
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Stage stageFrame = new Stage();
+                stageFrame.setScene(new Scene(root));
+                stageFrame.getIcons().add(new Image("/image/icon.png"));
+                stageFrame.initModality(Modality.APPLICATION_MODAL);
+                stageFrame.show();
+
+
+
+            });
 
 
 
@@ -235,7 +230,7 @@ public class  MainMenuController {
          }
          TableMonitoring.setItems(DataSelectMonitoring);
 
-
+        // измеение цвета ячейки
          tb_percent.setCellFactory(column -> {
 
 

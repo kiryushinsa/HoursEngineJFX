@@ -1,5 +1,7 @@
 package controllers;
 
+import java.awt.*;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -18,12 +20,21 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import database.DataBaseHandler;
 import javafx.util.StringConverter;
 import recievers.JournalUsingRecieveData;
 import recievers.TechnicReceiveData;
+
+
 
 public class MenuJournalUsingController extends ControllersHandler {
 
@@ -121,11 +132,19 @@ public class MenuJournalUsingController extends ControllersHandler {
     private Spinner<Double> SpinnerUsingMinutes;
 
     @FXML
+    private ImageView ImageViewItem;
+
+
+    @FXML
     void initialize() throws SQLException, ClassNotFoundException
     {
         DateUsing.setValue(LocalDate.now());
             fillChoiceBox();
+            fillImageView();//first fill image view
 
+
+        ChoiseBoxTechnics.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+                     fillImageView();});
 
 
 // назначение параметров для столбцов таблицы
@@ -163,11 +182,6 @@ public class MenuJournalUsingController extends ControllersHandler {
 
         ButtonSend.setOnAction(event ->
         {
-
-
-
-
-
             DataBaseHandler Handler = new DataBaseHandler();
 
             LocalDate CurrentDateFromPicker = DateUsing.getValue();
@@ -176,42 +190,33 @@ public class MenuJournalUsingController extends ControllersHandler {
 
             if (getTime(SpinnerHours,SpinnerMinutes)!=null && getUsingTime(SpinnerUsingHours,SpinnerUsingMinutes)!=null)
             {
+            try
+            {
+                Handler.setJournalUsing(CurrentDate,getTime(SpinnerHours,SpinnerMinutes), getChoiceBoxTechnicID(),
+                        getUsingTime(SpinnerUsingHours,SpinnerUsingMinutes),TextFieldOrder.getText(),TextAreaNote.getText());
+                Handler.updateTechnicAfterUsing(getChoiceBoxTechnicID(),getUsingTime(SpinnerUsingHours,SpinnerUsingMinutes));
+                fillTableView();
 
-
-
-
-                try
-                {
-                    Handler.setJournalUsing(CurrentDate,getTime(SpinnerHours,SpinnerMinutes), getChoiceBoxTechnicID(),getUsingTime(SpinnerUsingHours,SpinnerUsingMinutes),TextFieldOrder.getText(),TextAreaNote.getText());
-                    Handler.updateTechnicAfterUsing(getChoiceBoxTechnicID(),getUsingTime(SpinnerUsingHours,SpinnerUsingMinutes));
-                    fillTableView();
-
-                    messageSaveSuccesful();
-
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (NumberFormatException e)
-                {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Ошибка при добавлении записи в базу данных");
-                    alert.setContentText("Заполните поле 'Время использования'");
-                    alert.showAndWait();
-                }
-
+                messageSaveSuccesful();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            catch (NumberFormatException e){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Error");
+                alert.setHeaderText("Ошибка при добавлении записи в базу данных");
+                alert.setContentText("Заполните поле 'Время использования'");
+                alert.showAndWait();
+            }
 
             }
             else {    Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Ошибка");
                 alert.setHeaderText("Ошибка при добавлении записи в базу данных");
                 alert.setContentText("Проверьте заполненность полей Время использования и Длительность использования");
-                alert.showAndWait();     }
-
-
-
+                alert.showAndWait();}
 
         });
 
@@ -233,7 +238,6 @@ public class MenuJournalUsingController extends ControllersHandler {
 
     }
 
-
     private void fillChoiceBox() throws SQLException, ClassNotFoundException {
         DataBaseHandler Query = new DataBaseHandler();
         Query.getTechnicRowForChoiseList(DataSelectTechnic,  Map);
@@ -249,14 +253,14 @@ public class MenuJournalUsingController extends ControllersHandler {
 
 
 
- public Integer getChoiceBoxTechnicID()
+    public Integer getChoiceBoxTechnicID()
  {
     return Map.get(ChoiseBoxTechnics.getValue());
  }
 
 
     private void fillTableView()
-    {
+     {
         TableViewJournalUsing.getItems().clear();
         DataBaseHandler Query = new DataBaseHandler();
 
@@ -272,44 +276,36 @@ public class MenuJournalUsingController extends ControllersHandler {
         updateTableViewParentController();
     }
 
-
+    //open context menu
     public void TableViewJournalUsing(MouseEvent mouseEvent)
     {
-        TableViewJournalUsing.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-            @Override
-            public void handle(ContextMenuEvent event) {
-                ContextMenuTable.show(TableViewJournalUsing,event.getScreenX(),event.getScreenY());
-
-            }
-        });
+      TableViewJournalUsing.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+        @Override
+        public void handle(ContextMenuEvent event) { ContextMenuTable.show(TableViewJournalUsing,event.getScreenX(),event.getScreenY());        }
+    });
     }
 
-
+//context menu delete
     public void ContextItemDeleteClick(ActionEvent actionEvent) throws SQLException, ClassNotFoundException, java.lang.RuntimeException {
         JournalUsingRecieveData  selectedRow= TableViewJournalUsing.getSelectionModel().getSelectedItem();
         System.out.println(selectedRow.getId_note());
         DataBaseHandler Delete = new DataBaseHandler();
-
-
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Внимание");
         alert.setHeaderText("Удалить запись с идентификатором: "+selectedRow.getId_note());
         Optional<ButtonType> option= alert.showAndWait();
 
-        if(option.get()==null) {                 }
+        if(option.get()==null) { }
 
         else if(option.get()==ButtonType.OK)
         {
             Delete.deleteJusingRow(selectedRow.getId_note(),Integer.parseInt(selectedRow.getId_technic()),Double.parseDouble(selectedRow.getWork_time()));
             fillTableView();
-
-
         }
         else if(option.get()==ButtonType.CANCEL) { }
-
-
     }
+
     private void messageSaveSuccesful()
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -336,6 +332,22 @@ public class MenuJournalUsingController extends ControllersHandler {
         if(Parent!=null) {  Parent.fillTableView();}
     }
 
-
+    private void fillImageView()
+    {
+        DataBaseHandler image = new DataBaseHandler();
+        try {
+            ImageViewItem.setImage(image.getImage(Map.get(ChoiseBoxTechnics.getValue())));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+        }
+        catch (NullPointerException e)
+        {
+            Class<?> clazz = this.getClass();
+            InputStream input = clazz.getResourceAsStream("/image/question.png");
+            Image question = new Image(input);
+            ImageViewItem.setImage(question);
+        }
+    }
 
 }

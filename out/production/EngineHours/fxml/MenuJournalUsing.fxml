@@ -12,6 +12,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -80,6 +81,7 @@
             <Label layoutX="43.0" layoutY="81.0" styleClass="label-field" text="Часы" />
             <Label layoutX="127.0" layoutY="81.0" styleClass="label-field" text="Минуты" />
             <Label layoutX="16.0" layoutY="185.0" styleClass="label-field" text="Длительность использования" />
+            <ImageView fx:id="ImageViewItem" fitHeight="304.0" fitWidth="253.0" layoutX="333.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
          </children></AnchorPane>
    </children>
 </AnchorPane>

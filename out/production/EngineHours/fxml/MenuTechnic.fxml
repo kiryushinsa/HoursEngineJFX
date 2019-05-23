@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
@@ -11,27 +12,27 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="823.0" prefWidth="958.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuTechnicController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="823.0" prefWidth="958.0" styleClass="backImage" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuTechnicController">
    <children>
-      <AnchorPane fx:id="AnchorInput" layoutX="15.0" layoutY="73.0" prefHeight="320.0" prefWidth="929.0" styleClass="anchorInput" stylesheets="@../css/main.css" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="14.0">
+      <AnchorPane fx:id="AnchorInput" layoutX="15.0" layoutY="61.0" prefHeight="320.0" prefWidth="929.0" styleClass="anchorInput" stylesheets="@../css/main.css" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="14.0">
          <children>
-            <TextField fx:id="FieldNameTechnic" layoutX="11.0" layoutY="38.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
-            <TextField fx:id="FieldFirstMilage" layoutX="11.0" layoutY="91.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
-            <TextField fx:id="FieldPeriodOfService" layoutX="11.0" layoutY="148.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
-            <TextField fx:id="FieldIndexEngineHours" layoutX="11.0" layoutY="196.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
-            <Label layoutX="11.0" layoutY="67.0" styleClass="label-field" text="Начальный пробег " AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
-            <Button fx:id="ButtonSend" layoutX="774.0" layoutY="14.0" mnemonicParsing="false" prefHeight="220.0" prefWidth="122.0" text="Записать " AnchorPane.rightAnchor="12.0">
+            <TextField fx:id="FieldNameTechnic" layoutX="11.0" layoutY="63.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
+            <TextField fx:id="FieldFirstMilage" layoutX="11.0" layoutY="116.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
+            <TextField fx:id="FieldPeriodOfService" layoutX="11.0" layoutY="173.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
+            <TextField fx:id="FieldIndexEngineHours" layoutX="11.0" layoutY="221.0" prefHeight="25.0" prefWidth="435.0" styleClass="label-field" stylesheets="@../css/main.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.0" />
+            <Label layoutX="11.0" layoutY="92.0" styleClass="label-field" text="Начальный пробег " AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
+            <Button fx:id="ButtonSend" layoutX="795.0" layoutY="52.0" mnemonicParsing="false" prefHeight="203.0" prefWidth="122.0" text="Записать " AnchorPane.rightAnchor="12.0">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font></Button>
-            <Label layoutX="11.0" layoutY="177.0" styleClass="label-field" text="Коэффициент моточасов(формат &quot;3.5&quot;)" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
-            <Label layoutX="11.0" layoutY="123.0" styleClass="label-field" text="Период обслуживания" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
-            <Label layoutX="11.0" layoutY="14.0" styleClass="label-field" text="Название техники" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
-            <ImageView fx:id="ImageViewItem" fitHeight="220.0" fitWidth="298.0" layoutX="474.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="473.6" AnchorPane.rightAnchor="157.0" />
-            <Button fx:id="ButtonChooseImage" layoutX="489.0" layoutY="251.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="258.0" text="Выбрать изображение " AnchorPane.leftAnchor="489.0" AnchorPane.rightAnchor="181.60000000000002" />
+            <Label layoutX="11.0" layoutY="202.0" styleClass="label-field" text="Коеффициент моточасов(формат &quot;3.5&quot;)" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
+            <Label layoutX="11.0" layoutY="150.0" styleClass="label-field" text="Период обслуживания" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
+            <Label layoutX="11.0" layoutY="39.0" styleClass="label-field" text="Название техники" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="483.2" />
+            <ImageView fx:id="ImageViewItem" fitHeight="252.0" fitWidth="272.0" layoutX="480.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="177.0" />
+            <Button fx:id="ButtonChooseImage" layoutX="487.0" layoutY="276.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="258.0" text="Выбрать изображение " AnchorPane.leftAnchor="487.0" AnchorPane.rightAnchor="183.60000000000002" />
          </children>
       </AnchorPane>
-      <Label layoutX="14.0" layoutY="14.0" styleClass="label-topics" text="Список техники" textFill="WHITE">
+      <Label layoutX="15.0" layoutY="7.0" styleClass="label-topics" text="Список техники" textFill="WHITE">
          <font>
             <Font name="Agency FB" size="48.0" />
          </font>
@@ -42,7 +43,7 @@
           <TableColumn fx:id="tb_name" prefWidth="89.0" text="Название" />
             <TableColumn fx:id="tb_first_milage" prefWidth="143.0" text="Начальный пробег " />
             <TableColumn fx:id="tb_period_of_service" prefWidth="133.0" text="Период ТО" />
-            <TableColumn fx:id="tb_index_of_engine_hours" prefWidth="199.0" text="Коэффициент машино часов" />
+            <TableColumn fx:id="tb_index_of_engine_hours" prefWidth="199.0" text="Коеффициент машино часов" />
             <TableColumn fx:id="tb_full_engine_hours" editable="false" prefWidth="163.0" text="Полный пробег " />
             <TableColumn fx:id="tb_next_service_milage" minWidth="0.0" prefWidth="138.0" text="Следующий ТО" />
         </columns>
@@ -54,5 +55,6 @@
             </ContextMenu>
          </contextMenu>
       </TableView>
+      <CheckBox fx:id="CheckBoxCopyCells" layoutX="792.0" layoutY="22.0" mnemonicParsing="false" text="Подставлять значения " textFill="WHITE" />
    </children>
 </AnchorPane>

@@ -1,7 +1,9 @@
 package controllers;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -55,9 +57,7 @@ public class  MenuTechnicController {
 
     @FXML
     private Button ButtonSend;
-
-
-
+    
     @FXML
     private TableView <TechnicReceiveData> TableTechnic;
 
@@ -101,51 +101,66 @@ public class  MenuTechnicController {
     private MainMenuController Parent=null;
 
     @FXML
-    private Button ButtonGetImage;
+    private CheckBox CheckBoxCopyCells;
+
+    File file=null;
 
     @FXML
     void initialize() {
 
-        ButtonChooseImage.setOnAction(event -> {
 
+
+        TableTechnic.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+
+            if(CheckBoxCopyCells.isSelected()) {
+
+                TechnicReceiveData selectedRow = TableTechnic.getSelectionModel().getSelectedItem();
+
+                DataBaseHandler obj = new DataBaseHandler();
+
+                try {
+                    ImageViewItem.setImage(obj.getImage(Integer.parseInt(selectedRow.getTechnic_id())));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                catch (NullPointerException e)
+                {
+                    Class<?> clazz = this.getClass();
+                    InputStream input = clazz.getResourceAsStream("/image/question.png");
+                    Image question = new Image(input);
+                    ImageViewItem.setImage(question);
+                }
+
+                FieldNameTechnic.setText(selectedRow.getName());
+                FieldFirstMilage.setText(selectedRow.getFirst_milage());
+                FieldPeriodOfService.setText(selectedRow.getPeriod_of_service());
+                FieldIndexEngineHours.setText(selectedRow.getIndex_engine_hours());
+
+            }
+        });
+
+        ButtonChooseImage.setOnAction(event -> {
+            //выбор изображения
            FileChooser fileChooser = new FileChooser();
            fileChooser.setTitle("Выберите изображение");
                fileChooser.getExtensionFilters().addAll
                        (
                          new FileChooser.ExtensionFilter("JPG(*.jpg)", "*.jpg"),
                              new FileChooser.ExtensionFilter("PNG(*.png)", "*.png")
-                                                        );
-            File file = fileChooser.showOpenDialog(AnchorInput.getScene().getWindow());
-
-               if(file!=null)
-               {
-                   DataBaseHandler dataBaseHandler = new DataBaseHandler();
-
-                   try {
-                       dataBaseHandler.addImage(91,file);
-                   } catch (SQLException e) {
-                       e.printStackTrace();
-                   } catch (ClassNotFoundException e) {
-                       e.printStackTrace();
-                   } catch (FileNotFoundException e) {
-                       e.printStackTrace();
-                   }
+                                            );
+            file = fileChooser.showOpenDialog(AnchorInput.getScene().getWindow());
 
 
-                   System.out.println(file.getName());
-                   System.out.println(file.getAbsolutePath());
-               }
+           try {
+               Image img = new Image(file.toURI().toString());
+               ImageViewItem.setImage(img);
+           }
+           catch (NullPointerException e){}
+       });
 
 
-
-       }       );
-
-        ButtonGetImage.setOnAction(event -> {
-//            Image image;
-//            File file;
-//            ImageViewItem.setImage();
-
-        });
 
       ButtonSend.setOnAction(event -> {
                   DataBaseHandler Handler = new DataBaseHandler();
@@ -153,7 +168,9 @@ public class  MenuTechnicController {
 
                   try {
 
-                      Handler.setTechnic(FieldNameTechnic.getText(), Integer.parseInt(FieldFirstMilage.getText()) ,Integer.parseInt(FieldPeriodOfService.getText()),Double.parseDouble(FieldIndexEngineHours.getText()));
+                      Handler.setTechnic(FieldNameTechnic.getText(), Integer.parseInt(FieldFirstMilage.getText()) ,
+                              Integer.parseInt(FieldPeriodOfService.getText()),Double.parseDouble(FieldIndexEngineHours.getText()),file);
+
                       FillTableView();
                       messageSaveSuccesful();
 
@@ -170,9 +187,11 @@ public class  MenuTechnicController {
                       alert.setHeaderText("Ошибка при добавлении записи в базу данных");
                       alert.setContentText("Заполните все поля");
                       alert.showAndWait();
+                  } catch (FileNotFoundException e) {
+                      e.printStackTrace();
                   }
 
-              }  );
+      }  );
 
         tb_id.setCellValueFactory(cell->cell.getValue().technic_idProperty());
         tb_name.setCellValueFactory(cell -> cell.getValue().nameProperty());
@@ -269,10 +288,7 @@ public class  MenuTechnicController {
 
     public void ContextItemDeleteClick(ActionEvent actionEvent) throws SQLException, ClassNotFoundException, java.lang.RuntimeException {
         TechnicReceiveData  selectedRow= TableTechnic.getSelectionModel().getSelectedItem();
-        System.out.println(selectedRow.getTechnic_id());
         DataBaseHandler Delete = new DataBaseHandler();
-
-
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Внимание");
@@ -289,12 +305,10 @@ public class  MenuTechnicController {
             }
         else if(option.get()==ButtonType.CANCEL){ }
 
-
-
-
-
-
     }
+
+
+
     private void messageSaveSuccesful()
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

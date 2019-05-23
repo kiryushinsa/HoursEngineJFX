@@ -13,6 +13,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -23,7 +24,7 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <AnchorPane layoutX="10.0" layoutY="90.0" prefHeight="398.0" prefWidth="435.0" styleClass="anchorInput" stylesheets="@../css/main.css" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="90.0">
+      <AnchorPane layoutX="10.0" layoutY="90.0" prefHeight="398.0" prefWidth="501.0" styleClass="anchorInput" stylesheets="@../css/main.css" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="90.0">
          <children>
             <DatePicker fx:id="DateUsing" layoutX="14.0" layoutY="33.0" />
             <Spinner fx:id="SpinnerHours" editable="true" layoutX="14.0" layoutY="98.0" prefHeight="25.0" prefWidth="82.0">
@@ -39,7 +40,7 @@
             <Label layoutX="14.0" layoutY="14.0" styleClass="label-field" text="Дата проведения" />
             <Label layoutX="16.0" layoutY="128.0" styleClass="label-field" text="Техника " />
             <Label layoutX="14.0" layoutY="305.0" styleClass="label-field" text="Примечание" />
-            <Button fx:id="ButtonSend" layoutX="313.0" layoutY="10.0" mnemonicParsing="false" prefHeight="72.0" prefWidth="116.0" text="Записать">
+            <Button fx:id="ButtonSend" layoutX="376.0" layoutY="263.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="96.0" text="Записать">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font></Button>
@@ -50,9 +51,10 @@
             <Label layoutX="14.0" layoutY="243.0" styleClass="label-field" text="Тип ТО" />
             <Label layoutX="41.0" layoutY="78.0" styleClass="label-field" text="Часы" />
             <Label layoutX="125.0" layoutY="78.0" styleClass="label-field" text="Минуты" />
-            <TextArea fx:id="TextAreaNote" layoutX="12.0" layoutY="323.0" prefHeight="60.0" prefWidth="416.0" />
-            <CheckBox fx:id="CheckerReset" layoutX="202.0" layoutY="270.0" mnemonicParsing="false" text="Сбросить Сервисные Часы" textFill="WHITE" />
+            <TextArea fx:id="TextAreaNote" layoutX="12.0" layoutY="323.0" prefHeight="60.0" prefWidth="479.0" />
+            <CheckBox fx:id="CheckerReset" layoutX="187.0" layoutY="270.0" mnemonicParsing="false" text="Сбросить Сервисные Часы" textFill="WHITE" />
             <Label layoutX="16.0" layoutY="62.0" styleClass="label-field" text="Время проведения" />
+            <ImageView fx:id="ImageViewItem" fitHeight="235.0" fitWidth="214.0" layoutX="262.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="262.0" AnchorPane.topAnchor="12.0" />
          </children></AnchorPane>
       <TableView fx:id="TableViewJournalTO" layoutX="10.0" layoutY="506.0" prefHeight="327.0" prefWidth="823.0" stylesheets="@../css/main.css" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
         <columns>
